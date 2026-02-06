@@ -1,7 +1,7 @@
 
 
 const ProviderDefault = () => {
-    return null;
+  return null;
 };
 
 export default ProviderDefault;
