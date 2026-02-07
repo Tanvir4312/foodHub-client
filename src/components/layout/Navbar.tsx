@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Loader2, Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -20,6 +20,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 interface MenuItem {
   title: string;
@@ -76,6 +77,10 @@ const Navbar = ({
   },
   className,
 }: Navbar1Props) => {
+  const { data: session, isPending } = authClient.useSession();
+
+  const userData = session?.user;
+
   return (
     <section className={cn("py-4", className)}>
       <div className="container">
@@ -93,6 +98,7 @@ const Navbar = ({
                 {logo.title}
               </span>
             </a>
+
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -102,6 +108,7 @@ const Navbar = ({
             </div>
           </div>
           <div className="flex gap-2">
+            <div>{userData && userData?.name}</div>
             <Button asChild variant="outline" size="sm">
               <Link href={auth.login.url}>{auth.login.title}</Link>
             </Button>
@@ -110,7 +117,13 @@ const Navbar = ({
             </Button>
           </div>
         </nav>
-
+        <div className="py-20 flex justify-center items-center">
+          {isPending ? (
+            <Loader2 className="h-6 w-6 animate-spin text-orange-500" />
+          ) : (
+            ""
+          )}
+        </div>
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
