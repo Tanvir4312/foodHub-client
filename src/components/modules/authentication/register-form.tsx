@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const formSchema = z.object({
   name: z.string().min(1, "This field is required"),
@@ -55,7 +56,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
   });
 
   return (
-    <Card {...props}>
+    <Card className="py-5" {...props}>
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
         <CardDescription>
@@ -184,7 +185,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
         
       </CardFooter>
       <FieldDescription className="text-center">
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <Link href="/login">Login</Link>
         </FieldDescription>
     </Card>
   );

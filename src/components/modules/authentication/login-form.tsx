@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z.object({
   password: z.string().min(8, "Minimum length is 8"),
@@ -62,7 +63,7 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="py-5">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
@@ -139,7 +140,7 @@ export function LoginForm({
           </Button>
         </CardFooter>
         <FieldDescription className="text-center ">
-          Don&apos;t have an account? <a href="/register">Sign up</a>
+          Don&apos;t have an account? <Link href="/register">Sign up</Link>
         </FieldDescription>
       </Card>
     </div>

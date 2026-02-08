@@ -68,7 +68,7 @@ export function Hero() {
         loop: true,
       }}
       plugins={[plugin.current]}
-      className="w-full max-w-6xl mx-auto"
+      className="w-full"
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
     >

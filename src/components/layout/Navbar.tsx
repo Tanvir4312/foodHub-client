@@ -139,7 +139,7 @@ const Navbar = ({
                       />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="p-5">
+                  <DropdownMenuContent className="p-5 bg-[#ffff] border-0">
                     <DropdownMenuGroup className="space-y-3">
                       <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                         <CircleUser />
