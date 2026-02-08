@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { env } from "@/env";
 
 const API_URL = env.API_URL;
@@ -16,7 +17,7 @@ export const categoryServices = {
         return { data: null, error: { message: "Categories not found" } };
       }
       return { data: categories, error: null };
-    } catch (err) {
+    } catch (e) {
       return { data: null, error: { message: "Categories not found" } };
     }
   },

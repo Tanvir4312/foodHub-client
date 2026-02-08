@@ -68,7 +68,7 @@ const CategoryById = async ({
                   </div>
                 </Link>
 
-                <div className="p-4 flex flex-col flex-grow">
+                <div className="p-4 flex flex-col grow">
                   <Link href={`/meals/${meal.id}`}>
                     <h4 className="text-xl font-bold text-gray-900 group-hover/card:text-orange-600 transition-colors">
                       {meal.name}

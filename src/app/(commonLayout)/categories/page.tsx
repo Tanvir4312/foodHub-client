@@ -1,14 +1,11 @@
-import CategoriesPage from '@/components/modules/homePage/categories';
 import React from 'react';
 
-const Categories = () => {
+const Category = () => {
     return (
         <div>
-            <div className="my-10">
-       <CategoriesPage/>
-     </div>
+            This is category page
         </div>
     );
 };
 
-export default Categories;
+export default Category;

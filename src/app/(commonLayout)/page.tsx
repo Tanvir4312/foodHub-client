@@ -1,6 +1,8 @@
 
 import { Hero } from "@/components/modules/homePage/hero";
-import Categories from "./categories/page";
+
+import CategoriesPage from "@/components/modules/homePage/categories";
+import AllProvider from "@/components/modules/homePage/allProvider";
 
 // import { services } from "@/services/user.services";
 
@@ -9,8 +11,13 @@ export default async function Home() {
     <div className="max-w-7xl mx-auto">
      <div className="my-10">
        <Hero />
-       <Categories/>
      </div>
+      <div className="my-20">
+         <CategoriesPage/>
+      </div>
+      <div className="my-20">
+         <AllProvider/>
+      </div>
      
     </div>
   );

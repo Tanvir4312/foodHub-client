@@ -1,7 +1,9 @@
-// import { getCategories } from "@/action/categories.action";
-import CategoryCard from "./homePageCards/category";
+
+
 import { CategoryType } from "@/types/categories.type";
 import { categoryServices } from "@/services/category.services";
+import CategoryCard from "./homePageCards/category";
+
 
 const CategoriesPage = async () => {
   const res = await categoryServices.getCategoriesService();

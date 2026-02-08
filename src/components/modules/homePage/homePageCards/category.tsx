@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const CategoryCard = ({ category }: { category: CategoryType }) => {
  const {image_url, name} = category || {}
- console.log(category)
+
   return (
     <div>
       <Link href={`/categories/${category.id}`}>
@@ -20,7 +20,7 @@ const CategoryCard = ({ category }: { category: CategoryType }) => {
               className="object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>
-          <p className="mt-3 text-center font-semibold font-medium text-gray-800 group-hover:text-orange-600 transition-colors">
+          <p className="mt-3 text-center font-semibold text-gray-800 group-hover:text-orange-600 transition-colors">
             {name}
           </p>
         </div>
