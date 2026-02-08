@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Menu } from "lucide-react";
+import { CircleUser, Loader2, Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -21,6 +21,20 @@ import {
 } from "@/components/ui/sheet";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { FaRegEdit } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 
 interface MenuItem {
   title: string;
@@ -54,7 +68,7 @@ interface Navbar1Props {
 
 const Navbar = ({
   logo = {
-    url: "https://www.shadcnblocks.com",
+    url: "/",
     src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
     alt: "logo",
     title: "Shadcnblocks.com",
@@ -77,6 +91,7 @@ const Navbar = ({
   },
   className,
 }: Navbar1Props) => {
+  const [trigger, setTrigger] = useState(false);
   const { data: session, isPending } = authClient.useSession();
 
   const userData = session?.user;
@@ -89,13 +104,9 @@ const Navbar = ({
           <div className="flex items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
-              />
-              <span className="text-lg font-semibold tracking-tighter">
-                {logo.title}
+              <span className="text-2xl font-bold">Food</span>
+              <span className="text-[#e95393] -m-2 text-3xl font-bold">
+                Hub
               </span>
             </a>
 
@@ -107,8 +118,54 @@ const Navbar = ({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
-            <div>{userData && userData?.name}</div>
+
+          <div className="flex gap-4 items-center">
+            {userData && (
+              <div className="flex items-center gap-1">
+                <Image
+                  src="https://img.icons8.com/?size=64&id=23392&format=png"
+                  width={25}
+                  height={20}
+                  alt=""
+                />
+
+                <DropdownMenu onOpenChange={setTrigger}>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="-m-4 cursor-pointer text-[18px] focus-visible:ring-0">
+                      {userData && userData?.name}
+
+                      <IoIosArrowDown
+                        className={`transform transition-transform duration-300 text-[#FF4F00] ${trigger ? " rotate-180" : "rotate-0 "}`}
+                      />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="p-5">
+                    <DropdownMenuGroup className="space-y-3">
+                      <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                        <CircleUser />
+                        My Account
+                      </DropdownMenuLabel>
+                      <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                        <FaRegEdit />
+                        Edit Profile
+                      </DropdownMenuLabel>
+                      <DropdownMenuLabel className="hover:bg-[#ffdddd] rounded px-5 flex items-center gap-2">
+                        <MdLogout className="text-lg font-semibold" />
+                        <Button
+                          onClick={async () => {
+                            await authClient.signOut();
+                          }}
+                          className="text-lg font-semibold cursor-pointer"
+                        >
+                          Logout
+                        </Button>
+                      </DropdownMenuLabel>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
             <Button asChild variant="outline" size="sm">
               <Link href={auth.login.url}>{auth.login.title}</Link>
             </Button>
@@ -117,13 +174,15 @@ const Navbar = ({
             </Button>
           </div>
         </nav>
-        <div className="py-20 flex justify-center items-center">
-          {isPending ? (
-            <Loader2 className="h-6 w-6 animate-spin text-orange-500" />
-          ) : (
-            ""
-          )}
-        </div>
+        {isPending && (
+          <div className="py-20 flex justify-center items-center">
+            {isPending ? (
+              <Loader2 className="h-6 w-6 animate-spin text-orange-500" />
+            ) : (
+              ""
+            )}
+          </div>
+        )}
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
@@ -161,6 +220,53 @@ const Navbar = ({
                   >
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
+
+                  {userData && (
+                    <div className="flex items-center gap-1">
+                      <Image
+                        src="https://img.icons8.com/?size=64&id=23392&format=png"
+                        width={25}
+                        height={20}
+                        alt=""
+                      />
+
+                      <DropdownMenu onOpenChange={setTrigger}>
+                        <DropdownMenuTrigger asChild>
+                          <Button className="-m-4 cursor-pointer text-[18px] focus-visible:ring-0">
+                            {userData && userData?.name}
+
+                            <IoIosArrowDown
+                              className={`transform transition-transform duration-300 text-[#FF4F00] ${trigger ? " rotate-180" : "rotate-0 "}`}
+                            />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="p-5 bg-[#ffdddd]">
+                          <DropdownMenuGroup className="space-y-3">
+                            <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                              <CircleUser />
+                              My Account
+                            </DropdownMenuLabel>
+                            <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                              <FaRegEdit />
+                              Edit Profile
+                            </DropdownMenuLabel>
+                            <DropdownMenuLabel className="hover:bg-[#ffdddd] rounded px-5 flex items-center gap-2">
+                              <MdLogout className="text-lg font-semibold" />
+                              <Button
+                                onClick={async () => {
+                                  await authClient.signOut();
+                                }}
+                                className="text-lg font-semibold cursor-pointer"
+                              >
+                                Logout
+                              </Button>
+                            </DropdownMenuLabel>
+                          </DropdownMenuGroup>
+                          <DropdownMenuSeparator />
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  )}
 
                   <div className="flex flex-col gap-3">
                     <Button asChild variant="outline">
