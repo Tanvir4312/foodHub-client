@@ -8,7 +8,7 @@ export const categoryServices = {
       const url = new URL(`${API_URL}/categories`);
 
       const res = await fetch(url.toString(), {
-        next: { revalidate: 3600 },
+        next: { revalidate: 60 },
       });
 
       const categories = await res.json();

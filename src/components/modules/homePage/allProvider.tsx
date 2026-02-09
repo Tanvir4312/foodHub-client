@@ -10,13 +10,13 @@ const AllProvider = async () => {
   const providers = data?.data;
 
   // Filter available providers
-  const availableProviders = providers.filter(
+  const availableProviders = providers?.filter(
     (p: ProviderType) => p.isAvailable === true,
   );
 
   return (
     <div>
-      {availableProviders.length > 0 && (
+      {availableProviders?.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-6">
             <div className="relative flex h-3 w-3">
@@ -43,7 +43,7 @@ const AllProvider = async () => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {providers.map((provider: ProviderType) => {
+        {providers?.map((provider: ProviderType) => {
           return (
             <ProviderCard key={provider.id} provider={provider}></ProviderCard>
           );

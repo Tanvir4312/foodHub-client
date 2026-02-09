@@ -2,6 +2,7 @@ import { categoryServices } from "@/services/category.services";
 import Image from "next/image";
 
 import Link from "next/link";
+import mealPic from "../../../../../public/images/hero-4.jpg"
 
 const CategoryById = async ({
   params,
@@ -12,7 +13,7 @@ const CategoryById = async ({
 
   const { data: category } = await categoryServices.getCategoryServiceById(id);
   const { name, description, image_url, meals } = category || {};
-  console.log(meals);
+ 
   return (
     <div className="w-full max-w-7xl mx-auto mb-20 px-4">
       <div className="relative h-100 w-full rounded-[40px] overflow-hidden shadow-2xl group">
@@ -34,7 +35,7 @@ const CategoryById = async ({
       </div>
 
       <div className="mt-12">
-        {meals.length === 0 && (
+        {meals?.length === 0 && (
           <p className="text-red-500 text-2xl font-bold">
             No meals available now
           </p>
@@ -58,7 +59,7 @@ const CategoryById = async ({
                   className="relative h-52 w-full block overflow-hidden rounded-3xl"
                 >
                   <Image
-                    src={meal.image_url ?? "/default-food.png"}
+                    src={meal.image_url ?? mealPic}
                     alt={meal.name}
                     fill
                     className="object-cover transition-transform duration-500 group-hover/card:scale-110"

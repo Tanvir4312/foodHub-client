@@ -10,7 +10,7 @@ const CategoriesPage = async () => {
 
   const categories = res?.data?.data || [];
 
-  if (categories.length === 0) {
+  if (categories?.length === 0) {
     return null; 
   }
 
@@ -28,7 +28,7 @@ const CategoriesPage = async () => {
       </div>
 
       <div className="grid lg:grid-cols-6 grid-cols-2 gap-5">
-        {categories.map((category: CategoryType) => (
+        {categories?.map((category: CategoryType) => (
           
           <CategoryCard key={category.id} category={category}></CategoryCard>
         ))}

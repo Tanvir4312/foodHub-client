@@ -1,10 +1,8 @@
 import { MealType } from "@/types/meal.type";
 import { ProviderType } from "@/types/provider.type";
 import Image from "next/image";
-import React from "react";
 
 const ProviderCard = ({ provider }: { provider: ProviderType }) => {
- 
   return (
     <div>
       <section className=" px-4 py-12 w-full">
@@ -35,11 +33,11 @@ const ProviderCard = ({ provider }: { provider: ProviderType }) => {
               {provider.meals?.length > 0 ? (
                 Array.from(
                   new Set(
-                    provider.meals
-                      .map((meal: MealType) => meal.categories?.name)
-                      .filter(Boolean)
+                    provider?.meals
+                      ?.map((meal: MealType) => meal.categories?.name)
+                      .filter(Boolean),
                   ),
-                ).map((categoryName, index, array) => (
+                )?.map((categoryName, index, array) => (
                   <span key={index}>
                     {categoryName as string}
                     {index < array.length - 1 ? " •" : ""}

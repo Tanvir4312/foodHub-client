@@ -73,7 +73,7 @@ export function Hero() {
       onMouseLeave={plugin.current.reset}
     >
       <CarouselContent>
-        {bannerData.map((item) => (
+        {bannerData?.map((item) => (
           <CarouselItem key={item.id}>
             <div className="p-1">
               {" "}

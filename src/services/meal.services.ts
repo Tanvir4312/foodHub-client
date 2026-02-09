@@ -2,21 +2,21 @@
 import { env } from "@/env";
 
 const API_URL = env.API_URL;
-export const providerServices = {
-  getProviderService: async () => {
+export const mealServices = {
+  getTopMealService: async () => {
     try {
-      const url = new URL(`${API_URL}/providers`);
+      const url = new URL(`${API_URL}/top-meals`);
 
       const res = await fetch(url.toString(), {
         cache: "no-store",
       });
 
-      const providers = await res.json();
+      const meals = await res.json();
 
-      if (!providers) {
+      if (!meals) {
         return { data: null, error: { message: "providers not found" } };
       }
-      return { data: providers, error: null };
+      return { data: meals, error: null };
     } catch (e) {
       return { data: null, error: { message: "providers not found" } };
     }

@@ -1,5 +1,3 @@
-
-
 export interface MealType {
   averageRating: number;
   categories: { name: string };
@@ -11,4 +9,6 @@ export interface MealType {
   isAvailable: boolean;
   name: string;
   price: number;
+  isDeleted: boolean;
+  totalReviews: number;
 }
