@@ -58,4 +58,23 @@ export const mealServices = {
       return { data: null, error: { message: "Meals not found" } };
     }
   },
+    getTopMealById: async (id: string) => {
+    try {
+      const url = new URL(`${API_URL}/meals/${id}`);
+
+      const res = await fetch(url.toString(), {
+        cache: "no-store",
+      });
+
+      const meal = await res.json();
+
+      if (!meal) {
+        return { data: null, error: { message: "Meals not found" } };
+      }
+
+      return { data: meal, error: null };
+    } catch (e) {
+      return { data: null, error: { message: "Meals not found" } };
+    }
+  },
 };

@@ -1,6 +1,7 @@
 import { MealType } from "@/types/meal.type";
 import { ProviderType } from "@/types/provider.type";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProviderCard = ({ provider }: { provider: ProviderType }) => {
   return (
@@ -53,7 +54,7 @@ const ProviderCard = ({ provider }: { provider: ProviderType }) => {
                 Quick Delivery
               </span>
               <button className="bg-orange-600 hover:bg-black text-white px-6 py-2 rounded-xl font-bold transition-colors duration-300 cursor-pointer">
-                MENU
+               <Link href={`/providers/menu/${provider.id}`}> MENU</Link>
               </button>
             </div>
           </div>

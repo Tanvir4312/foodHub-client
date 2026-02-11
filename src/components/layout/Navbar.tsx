@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleUser, Loader2, Menu } from "lucide-react";
+import { CircleUser, Loader2, Menu, ShoppingCart } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -31,10 +31,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
+import { getCartCountAction } from "@/action/addToCart.action";
+import CartData from "../modules/cartData/cartData";
 
 interface MenuItem {
   title: string;
@@ -93,9 +95,23 @@ const Navbar = ({
 }: Navbar1Props) => {
   const [trigger, setTrigger] = useState(false);
   const { data: session, isPending } = authClient.useSession();
+  const [count, setCount] = useState(null);
 
   const userData = session?.user;
 
+  useEffect(() => {
+    const fetchCount = async () => {
+      const { data: cartCount } = await getCartCountAction();
+
+      setCount(typeof cartCount === "object" ? cartCount?.count : cartCount);
+    };
+
+    fetchCount();
+
+    window.addEventListener("cartUpdated", fetchCount);
+
+    return () => window.removeEventListener("cartUpdated", fetchCount);
+  }, []);
   return (
     <section className={cn("py-4", className)}>
       <div className="container">
@@ -172,8 +188,32 @@ const Navbar = ({
             <Button asChild size="sm">
               <Link href={auth.signup.url}>{auth.signup.title}</Link>
             </Button>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button className="relative hover:bg-orange-100 -m-2 rounded-full cursor-pointer flex items-center justify-center">
+                  <ShoppingCart size={26} className="text-black" />
+
+                  <span className="text-xl">{count}</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="flex flex-col h-full  p-0">
+                <SheetHeader className="p-6 border-b shrink-0">
+                  <SheetTitle className="flex items-center gap-2">
+                    <ShoppingCart /> Your Cart ({count})
+                  </SheetTitle>
+                
+                </SheetHeader>
+                  <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-gray-50/30">
+                    <CartData />
+                  </div>
+              </SheetContent>
+            </Sheet>
+
+      
           </div>
         </nav>
+
         {isPending && (
           <div className="py-20 flex justify-center items-center">
             {isPending ? (
@@ -186,10 +226,27 @@ const Navbar = ({
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button className="relative hover:bg-orange-100 p-2 rounded-full cursor-pointer flex items-center justify-center">
+                  <ShoppingCart size={26} className="text-black" />
+
+                  <span className="text-xl">{count}</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <ShoppingCart /> Your Cart ({count})
+                  </SheetTitle>
+                  <div>
+                    <CartData />
+                  </div>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
             {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              
-            </a>
+            <a href={logo.url} className="flex items-center gap-2"></a>
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -199,9 +256,7 @@ const Navbar = ({
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
-                     
-                    </a>
+                    <a href={logo.url} className="flex items-center gap-2"></a>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">

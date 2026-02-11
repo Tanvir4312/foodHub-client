@@ -15,7 +15,7 @@ const CategoryCard = ({ category }: { category: CategoryType }) => {
           <div className="relative h-24 w-24 md:h-32 md:w-32 mx-auto overflow-hidden rounded-full border-2 border-transparent transition-all hover:border-orange-500 shadow-md">
             <Image
               src={image_url}
-              alt=""
+              alt={category.name}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-110"
             />

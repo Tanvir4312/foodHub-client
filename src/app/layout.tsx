@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Arimo, Geist, Geist_Mono, Roboto } from "next/font/google";
+import { Arimo, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/provider/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 
