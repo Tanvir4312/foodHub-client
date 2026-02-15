@@ -11,8 +11,8 @@ const TopMealCard = ({ meal }: { meal: MealType }) => {
           {/* Meal Image */}
           <div className="relative h-48 w-full overflow-hidden">
             <Image
-              src={meal.image_url}
-              alt={meal.name}
+              src={meal.image_url as string}
+              alt={meal.name as string}
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-500"
             />
@@ -20,13 +20,13 @@ const TopMealCard = ({ meal }: { meal: MealType }) => {
             <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
               <span className="text-sm font-bold text-gray-800">
-                {meal.averageRating.toFixed(1)}
+                {(meal.averageRating as number).toFixed(1)}
               </span>
             </div>
           </div>
 
           {/* Rating with star */}
-          {meal?.averageRating > 0 && (
+          {(meal?.averageRating as number) > 0 && (
             <div className="flex items-center gap-1 mt-3 px-4">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -36,7 +36,7 @@ const TopMealCard = ({ meal }: { meal: MealType }) => {
                     viewBox="0 0 24 24"
                     fill="currentColor"
                     className={`w-4 h-4 ${
-                      i < Math.floor(meal.averageRating)
+                      i < Math.floor((meal.averageRating as number))
                         ? "text-yellow-400"
                         : "text-gray-300"
                     }`}
@@ -50,7 +50,7 @@ const TopMealCard = ({ meal }: { meal: MealType }) => {
                 ))}
               </div>
               <span className="text-xs font-bold text-gray-500 ml-1">
-                ({meal.averageRating.toFixed(1)})
+                ({(meal.averageRating as number).toFixed(1)})
               </span>
             </div>
           )}

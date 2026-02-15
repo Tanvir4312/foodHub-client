@@ -1,4 +1,13 @@
+import MealDetailsClient from "@/components/modules/meals/mealDetailsClient";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { categoryServices } from "@/services/category.services";
+
 import Image from "next/image";
 
 import Link from "next/link";
@@ -70,11 +79,9 @@ const CategoryById = async ({
                 </Link>
 
                 <div className="p-4 flex flex-col grow">
-                  <Link href={`/meals/${meal.id}`}>
-                    <h4 className="text-xl font-bold text-gray-900 group-hover/card:text-orange-600 transition-colors">
-                      {meal.name}
-                    </h4>
-                  </Link>
+                  <h4 className="text-xl font-bold text-gray-900 group-hover/card:text-orange-600 transition-colors">
+                    {meal.name}
+                  </h4>
 
                   {meal?.averageRating > 0 && (
                     <div className="flex items-center gap-1 mt-1 mb-3">
@@ -110,43 +117,43 @@ const CategoryById = async ({
                   </p>
 
                   <div className="flex gap-3 mt-auto">
-                    <Link
-                      href={`/meals/${meal.id}`}
-                      className="p-3 bg-gray-100 text-gray-600 rounded-2xl hover:bg-gray-200 transition-all"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2.5}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M2.036 12.322a1.012 1.012 0 010-.644m17.623 0a1.012 1.012 0 010 .644M12 18.75a6.75 6.75 0 110-13.5 6.75 6.75 0 010 13.5z"
-                        />
-                      </svg>
-                    </Link>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                          Order
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl">
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>Meal Details</DialogTitle>
+                        </DialogHeader>
 
-                    <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-orange-600 text-white rounded-2xl font-bold hover:bg-black transition-all active:scale-95 shadow-lg shadow-orange-100">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={3}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 4.5v15m7.5-7.5h-15"
+                        <MealDetailsClient
+                          meal={meal}
+                          forceOpen={true}
+                          text="order"
                         />
-                      </svg>
-                      Add to Cart
-                    </button>
+                      </DialogContent>
+                    </Dialog>
+
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="w-full border-2 cursor-pointer border-[#ff6900] text-orange-600 hover:bg-orange-100 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                          Add to Cart
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl">
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>Meal Details</DialogTitle>
+                        </DialogHeader>
+
+                        <MealDetailsClient
+                          meal={meal}
+                          forceOpen={true}
+                          text="cart"
+                        />
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </div>

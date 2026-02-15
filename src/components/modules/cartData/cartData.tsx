@@ -25,7 +25,7 @@ const CartData = () => {
 
   return (
     <div className="h-7">
-      {cartData.map((cart: cartType) => (
+      {cartData?.map((cart: cartType) => (
         <ShowCartData 
         key={cart.id} 
         cart={cart}

@@ -64,8 +64,8 @@ const MealsPage = async ({
                 <Link href={`/meal/${meal.id}`}>
                   <div className="relative h-56 w-full overflow-hidden">
                     <Image
-                      src={meal.image_url}
-                      alt={meal.name}
+                      src={meal.image_url as string}
+                      alt={meal.name as string}
                       width={200}
                       height={200}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"

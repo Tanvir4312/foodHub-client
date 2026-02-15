@@ -1,8 +1,18 @@
+import MealDetailsClient from "@/components/modules/meals/mealDetailsClient";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { providerServices } from "@/services/provider.services";
 import { MealType } from "@/types/meal.type";
 import { Info, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+
 
 const ProviderDetailsWithMenu = async ({
   params,
@@ -78,15 +88,17 @@ const ProviderDetailsWithMenu = async ({
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all group overflow-hidden"
               >
                 {/* Meal Image */}
-                <div className="h-48 overflow-hidden">
-                  <Image
-                    src={meal.image_url}
-                    alt={meal.name}
-                    width={200}
-                    height={200}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                <Link href={`/meals/${meal.id}`}>
+                  <div className="h-48 overflow-hidden">
+                    <Image
+                      src={meal?.image_url as string}
+                      alt={meal?.name as string}
+                      width={200}
+                      height={200}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </Link>
 
                 {/* Meal Info */}
                 <div className="p-5">
@@ -99,12 +111,34 @@ const ProviderDetailsWithMenu = async ({
 
                   {/* Buttons */}
                   <div className="mt-5 flex gap-2">
-                    <button className="flex-1 px-3 py-2 text-sm font-semibold border-2 border-orange-500 text-orange-600 rounded-xl hover:bg-orange-50 transition-colors">
-                      Add to Cart
-                    </button>
-                    <button className="flex-1 px-3 py-2 text-sm font-semibold bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors">
-                      Order Now
-                    </button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="flex-1 px-3 py-2 text-sm font-semibold bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors cursor-pointer">
+                          Order Now
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl">
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>Meal Details</DialogTitle>
+                        </DialogHeader>
+
+                        <MealDetailsClient meal={meal} forceOpen={true} text="order"/>
+                      </DialogContent>
+                    </Dialog>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="flex-1 px-3 py-2 text-sm font-semibold border-2 border-orange-500 text-orange-600 rounded-xl hover:bg-orange-50 transition-colors cursor-pointer">
+                          Add to Cart
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl">
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>Meal Details</DialogTitle>
+                        </DialogHeader>
+
+                        <MealDetailsClient meal={meal} forceOpen={true} text="cart"/>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </div>

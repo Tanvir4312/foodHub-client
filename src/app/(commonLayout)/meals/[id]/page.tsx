@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 const MealDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
-  const { data: meal, error } = await mealServices.getTopMealById(id);
+  const { data: meal, error } = await mealServices.getMealById(id);
 
 
   if (error || !meal || meal.id !== id) {

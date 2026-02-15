@@ -58,7 +58,7 @@ export const mealServices = {
       return { data: null, error: { message: "Meals not found" } };
     }
   },
-    getTopMealById: async (id: string) => {
+    getMealById: async (id: string) => {
     try {
       const url = new URL(`${API_URL}/meals/${id}`);
 

@@ -38,6 +38,14 @@ import { MdLogout } from "react-icons/md";
 import { getCartCountAction } from "@/action/addToCart.action";
 import CartData from "../modules/cartData/cartData";
 
+import { getSession } from "@/action/user.action";
+import { RoutesType } from "@/types/routes.type";
+import { Roles } from "@/constrants/roles";
+import { adminRoute } from "@/routes/adminRoute";
+import { providerRoute } from "@/routes/providerRoute";
+import { customerRoute } from "@/routes/customerRoute";
+import { Item } from "@radix-ui/react-accordion";
+
 interface MenuItem {
   title: string;
   url: string;
@@ -68,6 +76,11 @@ interface Navbar1Props {
   };
 }
 
+type Item = {
+  title: string;
+  url: string;
+};
+
 const Navbar = ({
   logo = {
     url: "/",
@@ -94,16 +107,21 @@ const Navbar = ({
   className,
 }: Navbar1Props) => {
   const [trigger, setTrigger] = useState(false);
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const [count, setCount] = useState(null);
 
   const userData = session?.user;
+
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const fetchCount = async () => {
       const { data: cartCount } = await getCartCountAction();
 
       setCount(typeof cartCount === "object" ? cartCount?.count : cartCount);
+
+      const { data } = await getSession();
+      setRole(data?.user?.role);
     };
 
     fetchCount();
@@ -112,6 +130,19 @@ const Navbar = ({
 
     return () => window.removeEventListener("cartUpdated", fetchCount);
   }, []);
+
+  let routes: RoutesType = [];
+
+  if (role === Roles.admin) {
+    routes = adminRoute;
+  } else if (role === Roles.provider) {
+    routes = providerRoute;
+  } else if (role === Roles.customer) {
+    routes = customerRoute;
+  } else {
+    routes = [];
+  }
+ 
   return (
     <section className={cn("py-4", className)}>
       <div className="container">
@@ -165,6 +196,19 @@ const Navbar = ({
                         <FaRegEdit />
                         Edit Profile
                       </DropdownMenuLabel>
+                      <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                        <FaRegEdit />
+                        {routes.map((item, idx) => {
+                          if (idx === 0) {
+                            return (
+                              <Link key={idx} href={item.url}>
+                                Dashboard
+                              </Link>
+                            );
+                          }
+                          return null;
+                        })}
+                      </DropdownMenuLabel>
                       <DropdownMenuLabel className="hover:bg-[#ffdddd] rounded px-5 flex items-center gap-2">
                         <MdLogout className="text-lg font-semibold" />
                         <Button
@@ -202,27 +246,15 @@ const Navbar = ({
                   <SheetTitle className="flex items-center gap-2">
                     <ShoppingCart /> Your Cart ({count})
                   </SheetTitle>
-                
                 </SheetHeader>
-                  <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-gray-50/30">
-                    <CartData />
-                  </div>
+                <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-gray-50/30">
+                  <CartData />
+                </div>
               </SheetContent>
             </Sheet>
-
-      
           </div>
         </nav>
 
-        {isPending && (
-          <div className="py-20 flex justify-center items-center">
-            {isPending ? (
-              <Loader2 className="h-6 w-6 animate-spin text-orange-500" />
-            ) : (
-              ""
-            )}
-          </div>
-        )}
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">

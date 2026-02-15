@@ -1,22 +1,33 @@
 "use client";
 
 import { addToCartAction } from "@/action/addToCart.action";
+import CheckOut from "@/app/(customerLayout)/checkouts/page";
 
 import { MealType } from "@/types/meal.type";
 
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { useState } from "react";
 import { toast } from "sonner";
 
-const MealDetailsClient = ({ meal }: { meal: MealType }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const MealDetailsClient = ({
+  meal,
+  forceOpen,
+  text,
+}: {
+  meal: MealType;
+  forceOpen?: boolean;
+  text?: string;
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(forceOpen);
   const [quantity, setQuantity] = useState(1);
-  const [click, setclick] = useState("");
+  const [click, setclick] = useState(text === "cart" ? "cart" : "order");
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const handleAddToCart = async () => {
-    const price = quantity * meal.price;
+    const price = quantity * meal?.price;
     try {
       const cart = await addToCartAction(meal.id, price, quantity);
       if (cart) {
@@ -29,32 +40,40 @@ const MealDetailsClient = ({ meal }: { meal: MealType }) => {
       }
     }
   };
+
   return (
     <div>
       <div className="md:flex gap-5 items-center space-y-4 md:space-y-0">
-        <button
-          onClick={() => {
-            setIsModalOpen(true);
-            setclick("order");
-          }}
-          className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
-        >
-          <ShoppingCart className="w-5 h-5" />
-          Order Now
-        </button>
-        <button
-          onClick={() => {
-            setIsModalOpen(true);
-            setclick("cart");
-          }}
-          className="w-full border-2 cursor-pointer border-[#ff6900] text-orange-600 hover:bg-orange-100 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
-        >
-          <ShoppingCart className="w-5 h-5" />
-          Add to Cart
-        </button>
+        {forceOpen ? (
+          <p className="text-green-500">Thank you for choosing Food Hub</p>
+        ) : (
+          <>
+            <button
+              onClick={() => {
+                setIsModalOpen(true);
+                setclick("order");
+              }}
+              className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Order Now
+            </button>
+
+            <button
+              onClick={() => {
+                setIsModalOpen(true);
+                setclick("cart");
+              }}
+              className="w-full border-2 cursor-pointer border-[#ff6900] text-orange-600 hover:bg-orange-100 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Add to Cart
+            </button>
+          </>
+        )}
       </div>
 
-      {/* --- ORDER MODAL --- */}
+      {/* ---  MODAL --- */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in duration-300">
@@ -64,7 +83,7 @@ const MealDetailsClient = ({ meal }: { meal: MealType }) => {
 
             <div className="flex items-center gap-4 mb-8 bg-gray-50 p-4 rounded-2xl">
               <Image
-                src={meal.image_url}
+                src={meal.image_url as string}
                 alt=""
                 width={200}
                 height={200}
@@ -126,7 +145,17 @@ const MealDetailsClient = ({ meal }: { meal: MealType }) => {
                   }}
                 >
                   {" "}
-                  Confirm - ${(meal.price * quantity).toFixed(2)}
+                  <Link
+                   href={{
+                    pathname : "/checkouts",
+                    query : {
+                      mealId : meal?.id,
+                      quantity
+                    }
+                   }}
+                  >
+                    Go to checkout - ${(meal.price * quantity).toFixed(2)}
+                  </Link>
                 </button>
               )}
             </div>
