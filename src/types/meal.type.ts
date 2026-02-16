@@ -11,4 +11,5 @@ export interface MealType {
   price: number;
   isDeleted?: boolean;
   totalReviews?: number;
+  provider_id : string
 }

@@ -5,6 +5,7 @@ export interface CartItemsType {
   price: number;
   quantity: number;
   meal: {
+    id : string;
     name: string;
     image_url: string;
     price: number;

@@ -4,3 +4,4 @@ export type * from "./meal.type";
 export type * from "./cart.type";
 export type * from "./cartItems.type";
 export type * from "./routes.type";
+export type * from "./orderData.type";

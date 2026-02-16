@@ -1,13 +1,14 @@
 "use client";
 
 import { addToCartAction } from "@/action/addToCart.action";
-import CheckOut from "@/app/(customerLayout)/checkouts/page";
+import { authClient } from "@/lib/auth-client";
 
 import { MealType } from "@/types/meal.type";
 
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import { toast } from "sonner";
@@ -24,9 +25,14 @@ const MealDetailsClient = ({
   const [isModalOpen, setIsModalOpen] = useState(forceOpen);
   const [quantity, setQuantity] = useState(1);
   const [click, setclick] = useState(text === "cart" ? "cart" : "order");
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
+  const { data: session } = authClient.useSession();
+  const router = useRouter();
   const handleAddToCart = async () => {
+    if (!session) {
+      router.push("/login");
+      return toast.error("Please Logged in at first");
+    }
     const price = quantity * meal?.price;
     try {
       const cart = await addToCartAction(meal.id, price, quantity);
@@ -146,13 +152,13 @@ const MealDetailsClient = ({
                 >
                   {" "}
                   <Link
-                   href={{
-                    pathname : "/checkouts",
-                    query : {
-                      mealId : meal?.id,
-                      quantity
-                    }
-                   }}
+                    href={{
+                      pathname: "/checkouts",
+                      query: {
+                        mealId: meal?.id,
+                        quantity,
+                      },
+                    }}
                   >
                     Go to checkout - ${(meal.price * quantity).toFixed(2)}
                   </Link>

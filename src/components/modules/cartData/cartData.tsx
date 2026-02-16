@@ -9,9 +9,11 @@ const CartData = () => {
 
   useEffect(() => {
     const fetchCount = async () => {
-      const { data } = await getCartAction();
+      const res = await getCartAction();
 
-      setCartData(data);
+      const actualData = Array.isArray(res.data) ? res.data : res.data?.data || [];
+
+      setCartData(actualData);
     };
 
     fetchCount();
@@ -21,7 +23,12 @@ const CartData = () => {
     return () => window.removeEventListener("cartUpdated", fetchCount);
   }, []);
 
-  console.log(cartData);
+ 
+
+  if(!cartData){
+    return null
+  }
+
 
   return (
     <div className="h-7">

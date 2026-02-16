@@ -21,6 +21,10 @@ export const getCartAction = async () => {
   return await addToCartServices.getCartsService();
 };
 
+export const getCartByIdAction = async (id : string) => {
+  return await addToCartServices.getCartsServiceById(id);
+};
+
 export const deleteCartAction = async (id : string) => {
   return await addToCartServices.deleteCartsService(id);
 };

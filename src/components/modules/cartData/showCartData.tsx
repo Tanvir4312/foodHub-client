@@ -7,7 +7,11 @@ import { useEffect, useState } from "react";
 import { ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { CartItemsType } from "@/types/cartItems.type";
-import { deleteCartAction, deleteCartItemAction } from "@/action/addToCart.action";
+import {
+  deleteCartAction,
+  deleteCartItemAction,
+} from "@/action/addToCart.action";
+import Link from "next/link";
 
 interface ProviderType {
   name: string;
@@ -26,7 +30,7 @@ const ShowCartData = ({
   const cartItemsArr = cart?.cartItems;
   const [allCart, setAllCart] = useState(initialCarts);
   const [allCartItem, setAllCartItem] = useState<CartItemsType[]>(cartItemsArr);
-
+ 
   useEffect(() => {
     const fetchCount = async () => {
       const { data } = await providerAction(provider_id);
@@ -42,7 +46,7 @@ const ShowCartData = ({
   }, [provider_id]);
   const { name, logo_url } = provider || {};
 
-  const handleDelete = async (id: string) => {
+  const handleDeleteCart = async (id: string) => {
     const previousCarts = [...allCart];
 
     setAllCart((prev) => prev.filter((cart) => cart.id !== id));
@@ -77,7 +81,7 @@ const ShowCartData = ({
         window.dispatchEvent(new Event("cartUpdated"));
       }
     } catch (err) {
-       setAllCartItem(previousItem);
+      setAllCartItem(previousItem);
       alert("Failed to connect to the server");
     }
   };
@@ -99,7 +103,7 @@ const ShowCartData = ({
           <h3 className="font-bold text-gray-800 text-lg">{name}</h3>
         </div>
         <button
-          onClick={() => handleDelete(cart.id)}
+          onClick={() => handleDeleteCart(cart.id)}
           className="text-red-500 hover:bg-red-50 p-2 rounded-xl transition-colors"
         >
           <Trash2 className="w-5 h-5 cursor-pointer" />
@@ -109,7 +113,7 @@ const ShowCartData = ({
       {/* Cart Item*/}
       <div className="p-4 space-y-4">
         {cartItems && cartItems.length > 0 ? (
-          (cartItems as unknown as CartItemsType[])?.map((item) => (
+          (cartItems as CartItemsType[])?.map((item) => (
             <div
               key={item.id}
               className="flex items-center justify-between group"
@@ -131,17 +135,17 @@ const ShowCartData = ({
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-700">
-                    {item.meal?.name || "Delicious Meal"}
+                    {item?.meal?.name || "Delicious Meal"}
                   </h4>
                   <p className="text-sm text-gray-500">
-                    {item.quantity} x ৳{item.price}
+                    {item.quantity} x ৳{item?.meal?.price}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
                 <p className="font-bold text-orange-600">
-                  ৳{item.price * item.quantity}
+                  ৳{item?.meal?.price * item.quantity}
                 </p>
                 <button
                   onClick={() => handleItemsDelete(item.id)}
@@ -163,18 +167,29 @@ const ShowCartData = ({
         <p className="text-sm text-gray-500 font-medium">Subtotal</p>
         <p className="text-xl font-black text-gray-800">
           ৳
-          {(cartItems as unknown as CartItemsType[])?.reduce(
-            (total, item) => total + item?.price * item.quantity,
+          {(cartItems as CartItemsType[])?.reduce(
+            (total, item) => total + item?.meal?.price * item.quantity,
             0,
           )}
         </p>
       </div>
 
       <button
-        onClick={() => console.log("Order placed for provider:", provider_id)}
-        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-200 transform active:scale-[0.98] shadow-md shadow-orange-200 flex items-center justify-center gap-2 group"
+     
+        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-200 transform active:scale-[0.98] shadow-md shadow-orange-200 flex items-center justify-center gap-2 group cursor-pointer"
       >
-        <span>Place Order</span>
+        <span>
+          <Link
+            href={{
+              pathname: "/checkouts",
+              query: {
+                cartId: cart?.id,
+              },
+            }}
+          >
+            Go to checkout
+          </Link>
+        </span>
 
         <svg
           className="w-5 h-5 group-hover:translate-x-1 transition-transform"

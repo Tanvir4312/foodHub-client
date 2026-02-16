@@ -58,7 +58,7 @@ export const addToCartServices = {
     try {
       const cookiStore = await cookies();
 
-      const url = new URL(`${API_URL}/cart`);
+      const url = new URL(`${API_URL}/carts`);
 
       const res = await fetch(url.toString(), {
         headers: {
@@ -71,6 +71,28 @@ export const addToCartServices = {
         return { data: null, error: { message: "No Cart available" } };
       }
       return { data: allCart, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "No Cart available" } };
+    }
+  },
+
+  getCartsServiceById: async (id : string) => {
+    try {
+      const cookiStore = await cookies();
+
+      const url = new URL(`${API_URL}/customer/cart/${id}`);
+
+      const res = await fetch(url.toString(), {
+        headers: {
+          Cookie: cookiStore.toString(),
+        },
+       
+      });
+      const cart = await res.json();
+      if (!cart) {
+        return { data: null, error: { message: "No Cart available" } };
+      }
+      return { data: cart, error: null };
     } catch (err) {
       return { data: null, error: { message: "No Cart available" } };
     }
