@@ -1,4 +1,12 @@
+import MealDetailsClient from "@/components/modules/meals/mealDetailsClient";
 import MealFilterBar from "@/components/modules/meals/mealFilter";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import PaginationControls from "@/components/ui/pagination-controll";
 import { mealServices } from "@/services/meal.services";
 import { MealType } from "@/types/meal.type";
@@ -13,8 +21,8 @@ const MealsPage = async ({
     search: string;
     minPrice: string;
     maxPrice: string;
-    dietary: string
-    page : string
+    dietary: string;
+    page: string;
   }>;
 }) => {
   const { search, minPrice, maxPrice, dietary, page } = await searchParams;
@@ -24,13 +32,13 @@ const MealsPage = async ({
     minPrice,
     maxPrice,
     dietary,
-    page
+    page,
   });
   const meals = data?.data || [];
   const pagination = data?.pagination || {
     current_Page: 1,
     limit: 7,
-    total_meal : 0,
+    total_meal: 0,
     totatl_page: 1,
   };
 
@@ -61,7 +69,7 @@ const MealsPage = async ({
                 className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-300 group"
               >
                 {/* Meal Image */}
-                <Link href={`/meal/${meal.id}`}>
+                <Link href={`/meals/${meal.id}`}>
                   <div className="relative h-56 w-full overflow-hidden">
                     <Image
                       src={meal.image_url as string}
@@ -90,13 +98,44 @@ const MealsPage = async ({
                   </p>
 
                   {/* Actions */}
-                  <div className="flex gap-3">
-                    <button className="flex-1 px-4 py-3 rounded-xl border-2 border-orange-500 text-orange-600 font-bold hover:bg-orange-50 text-sm transition-colors">
-                      Add to Cart
-                    </button>
-                    <button className="flex-1 px-4 py-3 rounded-xl bg-orange-500 text-white font-bold hover:bg-orange-600 text-sm shadow-lg shadow-orange-200 transition-colors">
-                      Order Now
-                    </button>
+                  <div className="flex gap-4">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                          Order
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl">
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>Meal Details</DialogTitle>
+                        </DialogHeader>
+
+                        <MealDetailsClient
+                          meal={meal as MealType}
+                          forceOpen={true}
+                          text="order"
+                        />
+                      </DialogContent>
+                    </Dialog>
+
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="w-full border-2 cursor-pointer border-[#ff6900] text-orange-600 hover:bg-orange-100 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                          Add to Cart
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl">
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>Meal Details</DialogTitle>
+                        </DialogHeader>
+
+                        <MealDetailsClient
+                          meal={meal as MealType}
+                          forceOpen={true}
+                          text="cart"
+                        />
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </div>
@@ -112,7 +151,7 @@ const MealsPage = async ({
             </div>
           )}
         </div>
-      <PaginationControls meta={pagination}></PaginationControls>
+        <PaginationControls meta={pagination}></PaginationControls>
       </section>
     </div>
   );

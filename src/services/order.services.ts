@@ -29,4 +29,26 @@ export const orderServices = {
       return { data: null, error: { message: "Something went wrong" } };
     }
   },
+
+  getOrderSevice: async () => {
+    const cookieStore = await cookies();
+
+    try {
+      const url = new URL(`${API_URL}/order/orders`);
+      const res = await fetch(url.toString(), {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        next: { tags: ["order-data"] },
+      });
+
+      const ownOrder = await res.json();
+      if (!ownOrder) {
+        return { data: null, error: { message: "Something went wrong" } };
+      }
+      return { data: ownOrder, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong" } };
+    }
+  },
 };

@@ -7,6 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { categoryServices } from "@/services/category.services";
+import { MealType } from "@/types/meal.type";
 
 import Image from "next/image";
 
@@ -129,7 +130,7 @@ const CategoryById = async ({
                         </DialogHeader>
 
                         <MealDetailsClient
-                          meal={meal}
+                          meal={meal as MealType}
                           forceOpen={true}
                           text="order"
                         />
@@ -148,7 +149,7 @@ const CategoryById = async ({
                         </DialogHeader>
 
                         <MealDetailsClient
-                          meal={meal}
+                          meal={meal as MealType}
                           forceOpen={true}
                           text="cart"
                         />

@@ -34,7 +34,7 @@ import {
 import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
+import { MdDashboardCustomize, MdLogout } from "react-icons/md";
 import { getCartCountAction } from "@/action/addToCart.action";
 import CartData from "../modules/cartData/cartData";
 
@@ -142,7 +142,7 @@ const Navbar = ({
   } else {
     routes = [];
   }
- 
+
   return (
     <section className={cn("py-4", className)}>
       <div className="container">
@@ -197,7 +197,7 @@ const Navbar = ({
                         Edit Profile
                       </DropdownMenuLabel>
                       <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
-                        <FaRegEdit />
+                        <MdDashboardCustomize />
                         {routes.map((item, idx) => {
                           if (idx === 0) {
                             return (
@@ -328,6 +328,19 @@ const Navbar = ({
                             <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                               <FaRegEdit />
                               Edit Profile
+                            </DropdownMenuLabel>
+                            <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                              <MdDashboardCustomize />
+                              {routes.map((item, idx) => {
+                                if (idx === 0) {
+                                  return (
+                                    <Link key={idx} href={item.url}>
+                                      Dashboard
+                                    </Link>
+                                  );
+                                }
+                                return null;
+                              })}
                             </DropdownMenuLabel>
                             <DropdownMenuLabel className="hover:bg-[#ffdddd] rounded px-5 flex items-center gap-2">
                               <MdLogout className="text-lg font-semibold" />

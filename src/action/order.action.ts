@@ -6,6 +6,10 @@ import { updateTag } from "next/cache";
 
 export const createOrderAction = async (orderData: OrderDataType) => {
   const result = await orderServices.createOrderService(orderData);
-  updateTag("create-order");
+  updateTag("order-data");
   return result;
+};
+
+export const getOwnOrderAction = async () => {
+  return await orderServices.getOrderSevice();
 };
