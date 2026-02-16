@@ -51,4 +51,26 @@ export const orderServices = {
       return { data: null, error: { message: "Something went wrong" } };
     }
   },
+
+  getOrderByIdService: async (id: string) => {
+    const cookiStore = await cookies();
+    try {
+      const url = new URL(`${API_URL}/order/orders/${id}`);
+
+      const res = await fetch(url.toString(), {
+        headers: {
+          Cookie: cookiStore.toString(),
+        },
+      });
+
+      const myOrder = await res.json();
+
+      if (!myOrder) {
+        return { data: null, error: { message: "Something went wrong" } };
+      }
+      return { data: myOrder, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong" } };
+    }
+  },
 };

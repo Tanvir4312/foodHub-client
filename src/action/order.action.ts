@@ -13,3 +13,7 @@ export const createOrderAction = async (orderData: OrderDataType) => {
 export const getOwnOrderAction = async () => {
   return await orderServices.getOrderSevice();
 };
+
+export const getOwnOrderByIdAction = async (id: string) => {
+  return await orderServices.getOrderByIdService(id);
+};

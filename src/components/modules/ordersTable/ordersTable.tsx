@@ -7,10 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Order } from "@/types/order.type";
+import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 const OrdersTable = ({ orders }: { orders: Order }) => {
-  console.log(orders);
+
   return (
     <div>
       <Table className="border">
@@ -28,7 +29,7 @@ const OrdersTable = ({ orders }: { orders: Order }) => {
               <TableCell>{order.delivery_address}</TableCell>
               <TableCell>{order.total_amount}</TableCell>
               <TableCell>{order.status}</TableCell>
-              <TableCell className="cursor-pointer flex items-center gap-1 hover:text-amber-600">Details <FaArrowRightLong /></TableCell>
+              <TableCell className="cursor-pointer hover:text-amber-600"><Link href={`/customer-dashboard/my-orders/${order.id}`} className="flex items-center gap-1">Details <FaArrowRightLong /></Link></TableCell>
             </TableRow>
           ))}
         </TableBody>
