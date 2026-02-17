@@ -37,6 +37,9 @@ export async function proxy(request: NextRequest) {
   if (!isCustomer && pathName.startsWith("/checkouts")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
+  if (!isCustomer && pathName.startsWith("/profile")) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 }
 
 export const config = {
@@ -49,5 +52,7 @@ export const config = {
     "/customer-dashboard/:path*",
     "/checkouts",
     "/checkouts/:path*",
+    "/profile",
+    "/profile/:path*",
   ],
 };

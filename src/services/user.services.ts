@@ -3,6 +3,7 @@ import { env } from "@/env";
 import { cookies } from "next/headers";
 
 const AUTH_URL = env.AUTH_URL;
+const API_URL = env.API_URL;
 export const services = {
   getSessionService: async () => {
     try {
@@ -24,4 +25,5 @@ export const services = {
       return { data: null, error: { message: "Something went wrong!!" } };
     }
   },
+
 };

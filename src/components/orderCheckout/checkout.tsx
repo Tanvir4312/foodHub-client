@@ -13,10 +13,10 @@ import { toast } from "sonner";
 import { createOrderAction } from "@/action/order.action";
 import { OrderDataType } from "@/types/orderData.type";
 
-
 const orderSchema = z.object({
   street: z.string().min(5, "Address is too short").max(100, ""),
   apartment: z.string().min(1, "Apartment/House info is required"),
+  phone: z.string(),
   note: z.string(),
 });
 
@@ -33,7 +33,6 @@ const Checkout = ({
   provider: ProviderType;
   carts: cartType;
 }) => {
-
   const { name } = meal || {};
   const { cartItems } = carts || {};
   const deliveryFee = 70;
@@ -46,6 +45,7 @@ const Checkout = ({
     defaultValues: {
       street: "",
       apartment: "",
+      phone: "",
       note: "",
     },
     validators: {
@@ -54,8 +54,8 @@ const Checkout = ({
     onSubmit: async ({ value }) => {
       const toastId = toast.loading("Processing....");
       const fullAddress = `${value.street}, Apartment: ${value.apartment}${value.note ? `, Note: ${value.note}` : ""}`;
+      const phone_number = value?.phone;
 
-      
       const items =
         cartItems?.length > 0
           ? cartItems.map((item) => ({
@@ -67,6 +67,7 @@ const Checkout = ({
             : [];
       const orderData = {
         delivery_address: fullAddress,
+        phone_number,
         items: items,
       };
 
@@ -85,11 +86,8 @@ const Checkout = ({
     },
   });
 
-
-
   const serviceFees =
-    cartItems?.reduce((total, item) => total + item.price, 0) *
-    0.1;
+    cartItems?.reduce((total, item) => total + item.price, 0) * 0.1;
   const servicesFee = Math.floor(serviceFees);
 
   const total =
@@ -113,7 +111,6 @@ const Checkout = ({
             <form
               id="order-form"
               onSubmit={(e) => {
-              
                 e.preventDefault();
                 form.handleSubmit();
               }}
@@ -133,7 +130,6 @@ const Checkout = ({
                           placeholder="Street / House Number"
                           className=" focus:ring-pink-500"
                           onChange={(e) => field.handleChange(e.target.value)}
-                     
                         ></Input>
                       </Field>
                     );
@@ -150,6 +146,26 @@ const Checkout = ({
                           name={field.name}
                           value={field.state.value}
                           placeholder="Apartment #"
+                          className="focus:ring-pink-500"
+                          onChange={(e) => field.handleChange(e.target.value)}
+                        ></Input>
+                      </Field>
+                    );
+                  }}
+                </form.Field>
+
+                <form.Field name="phone">
+                  {(field) => {
+                    return (
+                      <Field>
+                        <FieldLabel htmlFor={field.name}>
+                          Phone Number
+                        </FieldLabel>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value}
+                          placeholder="e.g. 017XXXXXXXX"
                           className="focus:ring-pink-500"
                           onChange={(e) => field.handleChange(e.target.value)}
                         ></Input>
@@ -202,7 +218,7 @@ const Checkout = ({
                 <div key={idx} className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-700">
                     <span>
-                      {item?.quantity } x {item?.meal?.name}
+                      {item?.quantity} x {item?.meal?.name}
                     </span>
                     <span>Tk {item?.price}</span>
                   </div>
@@ -227,7 +243,7 @@ const Checkout = ({
                   <span>
                     Tk{" "}
                     {(cartItems as CartItemsType[])?.reduce(
-                      (total, item) => total +  item.price,
+                      (total, item) => total + item.price,
                       0,
                     )}
                   </span>
@@ -279,7 +295,6 @@ const Checkout = ({
             )}
 
             <button
-          
               form="order-form"
               className="w-full mt-8 bg-[#E21B70] hover:bg-[#c41761] text-white font-bold py-4 rounded-xl transition-all cursor-pointer
              disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-50"

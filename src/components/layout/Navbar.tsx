@@ -189,13 +189,15 @@ const Navbar = ({
                   <DropdownMenuContent className="p-5 bg-[#ffff] border-0">
                     <DropdownMenuGroup className="space-y-3">
                       <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
-                        <CircleUser />
-                        My Account
+                        <Link
+                          href={`/profile/${userData?.id}`}
+                          className="flex items-center gap-2"
+                        >
+                          <FaRegEdit />
+                          My Account
+                        </Link>
                       </DropdownMenuLabel>
-                      <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
-                        <FaRegEdit />
-                        Edit Profile
-                      </DropdownMenuLabel>
+
                       <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                         <MdDashboardCustomize />
                         {routes.map((item, idx) => {
@@ -322,13 +324,15 @@ const Navbar = ({
                         <DropdownMenuContent className="p-5 bg-[#ffdddd]">
                           <DropdownMenuGroup className="space-y-3">
                             <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
-                              <CircleUser />
-                              My Account
+                              <Link
+                                href={`/profile/${userData?.id}`}
+                                className="flex items-center gap-2"
+                              >
+                                <FaRegEdit />
+                                My Account
+                              </Link>
                             </DropdownMenuLabel>
-                            <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
-                              <FaRegEdit />
-                              Edit Profile
-                            </DropdownMenuLabel>
+
                             <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                               <MdDashboardCustomize />
                               {routes.map((item, idx) => {

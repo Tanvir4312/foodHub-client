@@ -7,3 +7,4 @@ export type * from "./routes.type";
 export type * from "./orderData.type";
 export type * from "./order.type";
 export type * from "./orderItems.type";
+export type * from "./customerUpdate.type";
