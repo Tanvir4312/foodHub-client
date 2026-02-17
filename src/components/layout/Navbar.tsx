@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleUser, Loader2, Menu, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -44,7 +44,6 @@ import { Roles } from "@/constrants/roles";
 import { adminRoute } from "@/routes/adminRoute";
 import { providerRoute } from "@/routes/providerRoute";
 import { customerRoute } from "@/routes/customerRoute";
-import { Item } from "@radix-ui/react-accordion";
 
 interface MenuItem {
   title: string;
@@ -76,11 +75,6 @@ interface Navbar1Props {
   };
 }
 
-type Item = {
-  title: string;
-  url: string;
-};
-
 const Navbar = ({
   logo = {
     url: "/",
@@ -111,8 +105,11 @@ const Navbar = ({
   const [count, setCount] = useState(null);
 
   const userData = session?.user;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sessionRole = (session?.user as any)?.role;
 
-  const [role, setRole] = useState("");
+
+
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -120,8 +117,6 @@ const Navbar = ({
 
       setCount(typeof cartCount === "object" ? cartCount?.count : cartCount);
 
-      const { data } = await getSession();
-      setRole(data?.user?.role);
     };
 
     fetchCount();
@@ -133,11 +128,11 @@ const Navbar = ({
 
   let routes: RoutesType = [];
 
-  if (role === Roles.admin) {
+  if (sessionRole === Roles.admin) {
     routes = adminRoute;
-  } else if (role === Roles.provider) {
+  } else if (sessionRole === Roles.provider) {
     routes = providerRoute;
-  } else if (role === Roles.customer) {
+  } else if (sessionRole === Roles.customer) {
     routes = customerRoute;
   } else {
     routes = [];
@@ -190,7 +185,7 @@ const Navbar = ({
                     <DropdownMenuGroup className="space-y-3">
                       <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                         <Link
-                          href={`/profile/${userData?.id}`}
+                          href={`/profile`}
                           className="flex items-center gap-2"
                         >
                           <FaRegEdit />
@@ -325,7 +320,7 @@ const Navbar = ({
                           <DropdownMenuGroup className="space-y-3">
                             <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                               <Link
-                                href={`/profile/${userData?.id}`}
+                                href={`/profile`}
                                 className="flex items-center gap-2"
                               >
                                 <FaRegEdit />
@@ -334,17 +329,21 @@ const Navbar = ({
                             </DropdownMenuLabel>
 
                             <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
-                              <MdDashboardCustomize />
-                              {routes.map((item, idx) => {
-                                if (idx === 0) {
-                                  return (
-                                    <Link key={idx} href={item.url}>
-                                      Dashboard
-                                    </Link>
-                                  );
-                                }
-                                return null;
-                              })}
+                              {userData && (
+                                <>
+                                  <MdDashboardCustomize />
+                                  {routes.map((item, idx) => {
+                                    if (idx === 0) {
+                                      return (
+                                        <Link key={idx} href={item.url}>
+                                          Dashboard
+                                        </Link>
+                                      );
+                                    }
+                                    return null;
+                                  })}
+                                </>
+                              )}
                             </DropdownMenuLabel>
                             <DropdownMenuLabel className="hover:bg-[#ffdddd] rounded px-5 flex items-center gap-2">
                               <MdLogout className="text-lg font-semibold" />

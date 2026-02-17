@@ -73,4 +73,57 @@ export const orderServices = {
       return { data: null, error: { message: "Something went wrong" } };
     }
   },
+
+  getIncomigOrderService: async () => {
+    const cookiStore = await cookies();
+    try {
+      const url = new URL(`${API_URL}/order/incoming-orders/`);
+
+      const res = await fetch(url.toString(), {
+        headers: {
+          Cookie: cookiStore.toString(),
+        },
+        next: { tags: ["order-status"] },
+      });
+
+      const incomingOrders = await res.json();
+
+      if (!incomingOrders) {
+        return { data: null, error: { message: "Something went wrong" } };
+      }
+      return { data: incomingOrders, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong" } };
+    }
+  },
+
+  updateOrderStatusService: async (
+    id: string,
+    statusData: {
+      status: string;
+    },
+  ) => {
+    const cookiStore = await cookies();
+    try {
+      const url = new URL(`${API_URL}/order/orders/${id}`);
+
+      const res = await fetch(url.toString(), {
+        method: "PATCH",
+        headers: {
+          Cookie: cookiStore.toString(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(statusData),
+      });
+
+      const updateIncomingOrder = await res.json();
+
+      if (!updateIncomingOrder) {
+        return { data: null, error: { message: "Something went wrong" } };
+      }
+      return { data: updateIncomingOrder, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong" } };
+    }
+  },
 };

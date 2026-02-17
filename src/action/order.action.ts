@@ -17,3 +17,18 @@ export const getOwnOrderAction = async () => {
 export const getOwnOrderByIdAction = async (id: string) => {
   return await orderServices.getOrderByIdService(id);
 };
+
+export const getIncomingOrderAction = async () => {
+  return await orderServices.getIncomigOrderService();
+};
+
+export const updateOrderStatusAction = async (
+  id: string,
+  statusData: {
+    status : string
+  },
+) => {
+  const result = await orderServices.updateOrderStatusService(id, statusData);
+  updateTag("order-status");
+  return result;
+};

@@ -37,7 +37,13 @@ export async function proxy(request: NextRequest) {
   if (!isCustomer && pathName.startsWith("/checkouts")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  if (!isCustomer && pathName.startsWith("/profile")) {
+  if (
+    !(isCustomer || isProvider || isAdmin) &&
+    pathName.startsWith("/profile")
+  ) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+  if (!isProvider && pathName.startsWith("/provider-dashboard")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 }
@@ -54,5 +60,7 @@ export const config = {
     "/checkouts/:path*",
     "/profile",
     "/profile/:path*",
+    "/provider-dashboard",
+    "/provider-dashboard/:path*",
   ],
 };
