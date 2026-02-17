@@ -6,6 +6,10 @@ export const providerRoute: RoutesType = [
     url: "/provider-dashboard",
   },
   {
+    title: "Stats",
+    url: "/provider-dashboard/stats",
+  },
+  {
     title: "Home",
     url: "/",
   },
