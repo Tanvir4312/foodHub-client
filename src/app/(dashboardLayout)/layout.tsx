@@ -34,7 +34,7 @@ export default async function Page({
         <SidebarTrigger className="" />
           
        
-          <div className="flex flex-1 flex-col gap-4 p-10">
+          <div className="flex flex-1 flex-col gap-4 md:p-10">
            
               {userRole.role === Roles.admin && admin}
               {userRole.role === Roles.provider && provider}

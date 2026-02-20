@@ -8,3 +8,5 @@ export type * from "./orderData.type";
 export type * from "./order.type";
 export type * from "./orderItems.type";
 export type * from "./customerUpdate.type";
+export type * from "./newMeal.type";
+export type * from "./review.type";
