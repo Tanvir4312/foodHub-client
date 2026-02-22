@@ -11,10 +11,10 @@ export const createOrderAction = async (orderData: OrderDataType) => {
 };
 
 export const getOwnOrderAction = async () => {
-  return await orderServices.getOrderSevice();
+  return await orderServices.getOwnOrderSevice();
 };
 
-export const getOwnOrderByIdAction = async (id: string) => {
+export const getOrderByIdAction = async (id: string) => {
   return await orderServices.getOrderByIdService(id);
 };
 
@@ -31,4 +31,9 @@ export const updateOrderStatusAction = async (
   const result = await orderServices.updateOrderStatusService(id, statusData);
   updateTag("order-status");
   return result;
+};
+
+
+export const getAllOrderAction = async () => {
+  return await orderServices.getAllOrderService();
 };

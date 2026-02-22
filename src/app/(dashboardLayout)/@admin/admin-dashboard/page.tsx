@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Users,
   ShoppingBag,
-
   Clock,
   XCircle,
   TrendingUp,
@@ -11,17 +10,21 @@ import {
   UserPlus,
   ArrowUpRight,
   Activity,
+  UserCheck,
+  UserMinus,
 } from "lucide-react";
 
 export default async function PremiumAdminStats() {
   const res = await adminStatsAction();
 
   const stats = res?.data;
-
+ 
   if (!stats) {
     return;
   }
 
+  const activeUsers = stats?.active_user;
+  const suspendedUsers = stats?.supended_user;
   const totalRevenue = stats?.total_revenue?._sum?.total_amount || 0;
   const globalAOV = stats?.average_order_value?._avg?.total_amount || 0;
   const monthlyAOV = stats?.monthly_AOV?._avg?.total_amount || 0;
@@ -35,6 +38,51 @@ export default async function PremiumAdminStats() {
 
   return (
     <div className="space-y-8 p-2">
+      <div className="md:flex gap-3 space-y-4 md:space-y-0">
+        {/* Active Users - Emerald Theme */}
+        <Card className="border-none shadow-xl bg-white group hover:-translate-y-1 transition-all duration-300 flex-1">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
+                <UserCheck size={24} />
+              </div>
+              <span className="text-[10px] font-black px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
+                ACTIVE
+              </span>
+            </div>
+            <p className="text-slate-500 text-sm font-medium">Active Users</p>
+            <h3 className="text-2xl font-extrabold text-slate-900">
+              {activeUsers}
+            </h3>
+            <p className="text-xs text-emerald-500 font-bold mt-2">
+              Verified Accounts
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Suspended Users - Rose/Red Theme */}
+        <Card className="border-none shadow-xl bg-white group hover:-translate-y-1 transition-all duration-300 flex-1">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl">
+                <UserMinus size={24} />
+              </div>
+              <span className="text-[10px] font-black px-2 py-1 bg-rose-100 text-rose-700 rounded-full">
+                SUSPENDED
+              </span>
+            </div>
+            <p className="text-slate-500 text-sm font-medium">
+              Suspended Users
+            </p>
+            <h3 className="text-2xl font-extrabold text-rose-600">
+              {suspendedUsers}
+            </h3>
+            <p className="text-xs text-rose-400 font-medium mt-2">
+              Restricted Access
+            </p>
+          </CardContent>
+        </Card>
+      </div>
       {/* --- Section 1: Top Hero Stats --- */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {/* Revenue Card - Gradient Background */}

@@ -3,7 +3,7 @@ import { OrderItemType } from "@/types/orderItems.type";
 import { CreditCard, Info, MapPin, Package } from "lucide-react";
 import React from "react";
 
-const MyOrdersDetalis = async ({
+const AllOrderDetalis = async ({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -11,9 +11,9 @@ const MyOrdersDetalis = async ({
   const { id } = await params;
 
   const res = await getOrderByIdAction(id);
-  const myOrder = (await res?.data) || {};
+  const order = (await res?.data) || {};
 
-  const { delivery_address, total_amount, status, orderItems } = myOrder || {};
+  const { delivery_address, total_amount, status, orderItems } = order || {};
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
       {/* Header Section */}
@@ -119,4 +119,4 @@ const MyOrdersDetalis = async ({
   );
 };
 
-export default MyOrdersDetalis;
+export default AllOrderDetalis;

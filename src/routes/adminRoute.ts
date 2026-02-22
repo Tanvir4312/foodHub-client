@@ -10,6 +10,10 @@ export const adminRoute: RoutesType = [
     url: "/admin-dashboard/all-user",
   },
   {
+    title: "All Order",
+    url: "/admin-dashboard/all-order",
+  },
+  {
     title: "Home",
     url: "/",
   },

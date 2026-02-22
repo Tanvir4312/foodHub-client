@@ -22,7 +22,10 @@ export const orderServices = {
       const order = await res.json();
 
       if (!res.ok) {
-        return { data: null, error: { message: order.message || "Something went wrong!" } };
+        return {
+          data: null,
+          error: { message: order.message || "Something went wrong!" },
+        };
       }
       return { data: order, error: null };
     } catch (err) {
@@ -30,7 +33,7 @@ export const orderServices = {
     }
   },
 
-  getOrderSevice: async () => {
+  getOwnOrderSevice: async () => {
     const cookieStore = await cookies();
 
     try {
@@ -122,6 +125,29 @@ export const orderServices = {
         return { data: null, error: { message: "Something went wrong" } };
       }
       return { data: updateIncomingOrder, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong" } };
+    }
+  },
+
+  getAllOrderService: async () => {
+    const cookiStore = await cookies();
+    try {
+      const url = new URL(`${API_URL}/admin/orders`);
+
+      const res = await fetch(url.toString(), {
+        headers: {
+          Cookie: cookiStore.toString(),
+        },
+        next: { tags: ["order-data"] },
+      });
+
+      const allOrder = await res.json();
+
+      if (!allOrder) {
+        return { data: null, error: { message: "Something went wrong" } };
+      }
+      return { data: allOrder, error: null };
     } catch (err) {
       return { data: null, error: { message: "Something went wrong" } };
     }
