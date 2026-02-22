@@ -75,7 +75,9 @@ const Profile = async () => {
                 {userData?.role}
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-gray-300"></span>
-              <span className="text-sm text-green-600 bg-green-50 px-2 py-0.5 rounded-md">
+              <span
+                className={`text-sm  px-2 py-0.5 rounded-md ${userData?.status === "ACTIVE" ? "text-green-600 bg-green-50" : "text-red-600 bg-red-50"}`}
+              >
                 {userData?.status}
               </span>
             </div>

@@ -1,5 +1,6 @@
-"use server"
+"use server";
 import { providerServices } from "@/services/provider.services";
+import { ProviderProfile } from "@/types/providerProfile.type";
 
 export const providerAction = async (id: string) => {
   return await providerServices.getProviderById(id);
@@ -7,4 +8,10 @@ export const providerAction = async (id: string) => {
 
 export const providerStatsAction = async () => {
   return await providerServices.getProviderStats();
+};
+
+export const providerProfileAction = async (
+  providerProfileData: ProviderProfile,
+) => {
+  return await providerServices.createProviderProfile(providerProfileData);
 };

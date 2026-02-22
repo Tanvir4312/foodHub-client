@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { customerProfileUpdateAction } from "@/action/customer.action";
+import { getSession } from "@/action/user.action";
 import {
   Field,
   FieldError,
@@ -8,9 +9,11 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+
 import { UpdateProfileData } from "@/types/customerUpdate.type";
 import { useForm } from "@tanstack/react-form";
 import { LinkIcon, Phone, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import * as z from "zod";
 const formSchema = z.object({
@@ -23,22 +26,41 @@ const formSchema = z.object({
   image: z.string(),
 });
 
+type User = {
+  name: string;
+  phone_number: string;
+  image: string;
+};
+
 const ProfileUpdate = () => {
+  const [user, setUser] = useState<User>({} as User);
+  useEffect(() => {
+    (async () => {
+      const session = await getSession();
+      setUser(session?.data?.user);
+    })();
+  }, []);
   const form = useForm({
     defaultValues: {
-      name: "",
-      phone_number: "",
-      image: "",
+      name: user?.name,
+      phone_number: user?.phone_number,
+      image: user?.image,
     },
     validators: {
       onSubmit: formSchema,
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: async ({ value }: { value: UpdateProfileData }) => {
       const toastId = toast.loading("Updating...");
+
+      const updateData = {
+        name: value?.name !== "" ? value?.name : user?.name,
+        phone_number:
+          value?.phone_number !== "" ? value?.phone_number : user?.phone_number,
+        image: value?.image !== "" ? value?.image : user?.image,
+      };
+
       try {
-        const res = await customerProfileUpdateAction(
-          value as UpdateProfileData,
-        );
+        const res = await customerProfileUpdateAction(updateData);
 
         if (res.error) {
           toast.error(res.error.message, { id: toastId });

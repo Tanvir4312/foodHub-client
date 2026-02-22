@@ -25,7 +25,7 @@ const MyMealsDetails = async ({
     reviews,
   } = meal || {};
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
+    <div className="md:w-5xl mx-auto space-y-8 p-3">
       {/* Main Meal Card */}
       <div className="bg-white rounded-[40px] shadow-2xl shadow-gray-200/60 overflow-hidden border border-gray-100 flex flex-col lg:flex-row">
         {/* Left: Image Section */}

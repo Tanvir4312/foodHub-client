@@ -10,3 +10,5 @@ export type * from "./orderItems.type";
 export type * from "./customerUpdate.type";
 export type * from "./newMeal.type";
 export type * from "./review.type";
+export type * from "./providerProfile.type";
+export type * from "./user.type";

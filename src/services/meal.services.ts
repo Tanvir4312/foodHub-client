@@ -95,8 +95,11 @@ export const mealServices = {
       });
       const newMeal = await res.json();
 
-      if (!newMeal) {
-        return { data: null, error: { message: "Creation Failed!!!" } };
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: newMeal.message || "Something went wrong!!" },
+        };
       }
       return { data: newMeal, error: null };
     } catch (err) {

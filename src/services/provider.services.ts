@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { env } from "@/env";
+import { ProviderProfile } from "@/types/providerProfile.type";
+
 import { cookies } from "next/headers";
 
 const API_URL = env.API_URL;
@@ -58,6 +60,34 @@ export const providerServices = {
         return { data: null, error: { message: "providers not found" } };
       }
       return { data: providersStats, error: null };
+    } catch (e) {
+      return { data: null, error: { message: "providers not found" } };
+    }
+  },
+  createProviderProfile: async (providerProfileData : ProviderProfile) => {
+    const cookieStore = await cookies();
+    try {
+      const url = new URL(`${API_URL}/provider/provider-profile`);
+
+      const res = await fetch(url.toString(), {
+        method : "POST",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify(providerProfileData)
+      
+      });
+
+      const providerProfile = await res.json();
+
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: providerProfile.message || "providers not found" },
+        };
+      }
+      return { data: providerProfile, error: null };
     } catch (e) {
       return { data: null, error: { message: "providers not found" } };
     }

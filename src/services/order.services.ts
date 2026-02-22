@@ -21,8 +21,8 @@ export const orderServices = {
       });
       const order = await res.json();
 
-      if (!order) {
-        return { data: null, error: { message: "Something went wrong" } };
+      if (!res.ok) {
+        return { data: null, error: { message: order.message || "Something went wrong!" } };
       }
       return { data: order, error: null };
     } catch (err) {
