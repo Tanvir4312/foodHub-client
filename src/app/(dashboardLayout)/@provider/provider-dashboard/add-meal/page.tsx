@@ -13,6 +13,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { LinkIcon } from "lucide-react";
 import { toast } from "sonner";
 import { createMealAction } from "@/action/meals.action";
+import { useEffect, useState } from "react";
+import { CategoryType } from "@/types/categories.type";
+import { getCategoriesAction } from "@/action/categories.action";
 
 const formSchema = z.object({
   name: z
@@ -32,6 +35,19 @@ const formSchema = z.object({
 });
 
 const AddMeal = () => {
+  const [categories, setCategories] = useState<CategoryType[]>(
+    [] as CategoryType[],
+  );
+
+  useEffect(() => {
+    (async () => {
+      const res = await getCategoriesAction();
+      setCategories(res?.data?.data);
+    })();
+  }, []);
+
+  console.log(categories);
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -61,7 +77,7 @@ const AddMeal = () => {
           return;
         }
         toast.success("Creating Successfully", { id: toastId });
-        form.reset()
+        form.reset();
       } catch (err) {
         toast.error("Something went wrong", { id: toastId });
       }
@@ -152,13 +168,11 @@ const AddMeal = () => {
                     }`}
                   >
                     <option value="">Select a category</option>
-                    <option value="Mexican">Mexican</option>
-                    <option value="Beverages">Beverages</option>
-                    <option value="Healthy">Healthy</option>
-                    <option value="Fast Food">Fast Food</option>
-                    <option value="Bangladeshi">Bangladeshi</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Dessert">Dessert</option>
+                    {categories?.map((category) => (
+                      <option key={category?.id} value={category?.name}>
+                        {category?.name}
+                      </option>
+                    ))}
                   </select>
 
                   <FieldError

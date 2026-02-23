@@ -88,7 +88,7 @@ const ProviderDashboard = () => {
                     htmlFor={field.name}
                     className="text-sm font-bold text-gray-700 uppercase tracking-wider ml-1"
                   >
-                    Meal NAme
+                   Name
                   </FieldLabel>
                   <Input
                     id={field.name}

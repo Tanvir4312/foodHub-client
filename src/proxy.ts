@@ -60,7 +60,5 @@ export const config = {
     "/checkouts/:path*",
     "/profile",
     "/profile/:path*",
-    "/provider-dashboard",
-    "/provider-dashboard/:path*",
   ],
 };
