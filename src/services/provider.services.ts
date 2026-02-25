@@ -1,9 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { env } from "@/env";
-import { ProviderProfile } from "@/types/providerProfile.type";
+
 import { ProviderProfileUpdateValue } from "@/types/providerProfileUpdate.type";
 
 import { cookies } from "next/headers";
+
+
+type ProviderProfile= {
+    name: string;
+    description: string;
+    logo_url: string;
+    location: string;
+    phone_number: string;
+}
+
 
 const API_URL = env.API_URL;
 export const providerServices = {

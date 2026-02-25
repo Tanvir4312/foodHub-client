@@ -55,7 +55,7 @@ const ProviderProfileUpdate = () => {
     },
     onSubmit: async ({ value }: { value: ProviderProfileUpdateValue }) => {
       const toastId = toast.loading("Updating...");
-      // return console.log(value)
+
       const updateData = {
         name: value?.name !== "" ? value?.name : user?.name,
         phone_number:

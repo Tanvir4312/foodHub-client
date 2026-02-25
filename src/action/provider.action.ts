@@ -1,7 +1,16 @@
 "use server";
 import { providerServices } from "@/services/provider.services";
-import { ProviderProfile } from "@/types/providerProfile.type";
+
 import { ProviderProfileUpdateValue } from "@/types/providerProfileUpdate.type";
+
+
+type ProviderProfile= {
+    name: string;
+    description: string;
+    logo_url: string;
+    location: string;
+    phone_number: string;
+}
 
 export const providerAction = async (id: string) => {
   return await providerServices.getProviderById(id);

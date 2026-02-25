@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "@tanstack/react-form";
 import { LinkIcon } from "lucide-react";
-import { useEffect } from "react";
+
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -29,6 +29,9 @@ const formSchema = z.object({
     .regex(/^[0-9]+$/, "Only numbers allowed"),
 });
 
+
+
+
 const ProviderDashboard = () => {
   const form = useForm({
     defaultValues: {
@@ -43,7 +46,7 @@ const ProviderDashboard = () => {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+
 
       const providerProfileData = {
         name: value?.name,

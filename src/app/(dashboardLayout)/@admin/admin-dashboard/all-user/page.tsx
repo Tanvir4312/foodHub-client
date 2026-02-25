@@ -13,7 +13,7 @@ import Link from "next/link";
 const AdminAllUser = async () => {
   const res = await getAllUserAction();
   const allUser = res?.data;
-  console.log(allUser);
+
   return (
     <div>
       {allUser.length > 0 ? (

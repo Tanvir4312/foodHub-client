@@ -46,7 +46,7 @@ const AddMeal = () => {
     })();
   }, []);
 
-  console.log(categories);
+
 
   const form = useForm({
     defaultValues: {
