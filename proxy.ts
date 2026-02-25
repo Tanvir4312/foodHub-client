@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Roles } from "@/constrants/roles";
+import { services } from "@/services/user.services";
 import { NextRequest, NextResponse } from "next/server";
-import { fa } from "zod/v4/locales";
-import { services } from "./services/user.services";
-import { Roles } from "./constrants/roles";
 
 export async function proxy(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
