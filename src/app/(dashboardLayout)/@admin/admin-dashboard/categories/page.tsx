@@ -20,7 +20,7 @@ const AllCategory = async () => {
 
   return (
     <div>
-      {categories.length > 0 ? (
+      {categories?.length > 0 ? (
         <Table>
           <TableHeader>
             <TableRow>
