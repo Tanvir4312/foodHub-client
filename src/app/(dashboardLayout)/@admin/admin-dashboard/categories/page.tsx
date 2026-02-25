@@ -44,6 +44,7 @@ const AllCategory = async () => {
                     alt={category?.name}
                     width={70}
                     height={50}
+                    unoptimized
                   ></Image>
                 </TableCell>
                 <TableCell className="font-bold hover:text-amber-600 cursor-pointer">

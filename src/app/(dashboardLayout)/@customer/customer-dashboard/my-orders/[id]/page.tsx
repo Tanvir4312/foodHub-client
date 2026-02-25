@@ -17,7 +17,9 @@ const MyOrdersDetalis = async ({
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
       {/* Header Section */}
-      <div className="bg-[#E21B70] p-6 text-white flex justify-between items-center">
+      <div
+        className={`${status === "DELIVERED" ? "bg-green-600" : "bg-[#E21B70]"} p-6 text-white flex justify-between items-center`}
+      >
         <div>
           <h2 className="text-xl font-bold uppercase tracking-wide">
             Order Details

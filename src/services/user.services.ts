@@ -26,5 +26,27 @@ export const services = {
       return { data: null, error: { message: "Something went wrong!!" } };
     }
   },
+  getOwnUserData: async () => {
+    try {
+      const cookieStore = await cookies();
 
+      const res = await fetch(`${API_URL}/user`, {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+      const userData = await res.json();
+
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: userData?.message || "Something went wrong!!" },
+        };
+      }
+      return { data: userData, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong!!" } };
+    }
+  },
 };

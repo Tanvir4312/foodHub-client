@@ -85,6 +85,7 @@ export function Hero() {
                     fill
                     className="object-cover transition-transform duration-500 hover:scale-105"
                     priority={item.id === 1}
+                 
                   />
 
                   <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none text-white flex flex-col justify-end p-8 md:p-16 animate-in slide-in-from-bottom">

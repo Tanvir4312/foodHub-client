@@ -17,6 +17,7 @@ const CategoryCard = ({ category }: { category: CategoryType }) => {
               src={image_url}
               alt={category.name}
               fill
+              unoptimized
               className="object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>

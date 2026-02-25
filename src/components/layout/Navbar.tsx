@@ -34,11 +34,10 @@ import {
 import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
 import { MdDashboardCustomize, MdLogout } from "react-icons/md";
 import { getCartCountAction } from "@/action/addToCart.action";
 import CartData from "../modules/cartData/cartData";
-
-import { getSession } from "@/action/user.action";
 import { RoutesType } from "@/types/routes.type";
 import { Roles } from "@/constrants/roles";
 import { adminRoute } from "@/routes/adminRoute";
@@ -90,8 +89,8 @@ const Navbar = ({
       url: "/meals",
     },
     {
-      title: "Providers",
-      url: "/providers",
+      title: "Restaurants",
+      url: "/restaurant",
     },
   ],
   auth = {
@@ -108,15 +107,11 @@ const Navbar = ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sessionRole = (session?.user as any)?.role;
 
-
-
-
   useEffect(() => {
     const fetchCount = async () => {
       const { data: cartCount } = await getCartCountAction();
 
       setCount(typeof cartCount === "object" ? cartCount?.count : cartCount);
-
     };
 
     fetchCount();
@@ -169,6 +164,7 @@ const Navbar = ({
                   width={25}
                   height={20}
                   alt=""
+                  unoptimized
                 />
 
                 <DropdownMenu onOpenChange={setTrigger}>
@@ -192,6 +188,18 @@ const Navbar = ({
                           My Account
                         </Link>
                       </DropdownMenuLabel>
+
+                      {sessionRole === Roles.provider && (
+                        <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                          <Link
+                            href={`/providerProfile`}
+                            className="flex items-center gap-2"
+                          >
+                            <ImProfile />
+                            My Profile
+                          </Link>
+                        </DropdownMenuLabel>
+                      )}
 
                       <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                         <MdDashboardCustomize />
@@ -327,6 +335,17 @@ const Navbar = ({
                                 My Account
                               </Link>
                             </DropdownMenuLabel>
+                            {sessionRole === Roles.provider && (
+                              <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
+                                <Link
+                                  href={`/providerProfile`}
+                                  className="flex items-center gap-2"
+                                >
+                                  <ImProfile />
+                                  My Profile
+                                </Link>
+                              </DropdownMenuLabel>
+                            )}
 
                             <DropdownMenuLabel className="cursor-pointer hover:bg-[#ffdddd] rounded px-5 text-lg font-semibold flex items-center gap-2">
                               {userData && (

@@ -5,3 +5,7 @@ import { services } from "@/services/user.services"
 export const getSession = async () =>{
     return await services.getSessionService()
 }
+
+export const getOwnUserDataAction = async () =>{
+    return await services.getOwnUserData()
+}

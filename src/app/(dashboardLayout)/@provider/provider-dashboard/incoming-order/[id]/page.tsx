@@ -1,4 +1,4 @@
-import { getOwnOrderByIdAction } from "@/action/order.action";
+import { getOrderByIdAction } from "@/action/order.action";
 import OrderStatusUpdate from "@/components/orderStatusUpdate/orderStatusUpdate";
 
 import { OrderItemType } from "@/types/orderItems.type";
@@ -12,7 +12,7 @@ const IncomingOrdersDetalis = async ({
 }) => {
   const { id } = await params;
 
-  const res = await getOwnOrderByIdAction(id);
+  const res = await getOrderByIdAction(id);
   const incomingOrder = (await res?.data) || {};
 
 

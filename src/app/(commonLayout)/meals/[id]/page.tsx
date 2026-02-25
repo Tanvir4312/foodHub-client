@@ -1,5 +1,6 @@
 import MealDetailsClient from "@/components/modules/meals/mealDetailsClient";
 import { mealServices } from "@/services/meal.services";
+import { Review } from "@/types/review.type";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -9,11 +10,10 @@ const MealDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const { data: meal, error } = await mealServices.getMealById(id);
 
-
   if (error || !meal || meal.id !== id) {
     notFound();
   }
-
+  console.log(meal);
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
       <div className="flex flex-col md:flex-row">
@@ -24,6 +24,7 @@ const MealDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
             alt={meal.name}
             width={200}
             height={200}
+            unoptimized
             className="w-full h-full object-cover"
           />
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-orange-600">
@@ -68,27 +69,53 @@ const MealDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
         <div className="border-t border-gray-100 p-8 bg-gray-50/50">
           <h3 className="text-lg font-bold mb-4">Customer Reviews</h3>
           <div className="space-y-4">
-          
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex gap-1 mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-3 h-3 ${i < Math.floor(meal.averageRating) ? "fill-orange-500 text-orange-500" : "text-gray-300"}`}
-                  />
-                ))}
-              </div>
-              <p className="text-sm text-gray-600 italic">
-                The taste was amazing! Highly recommended.
-              </p>
+            <div className="space-y-4">
+              {meal?.reviews?.map((review: Review, index: number) => (
+                <div
+                  key={index}
+                  className="bg-white p-4 rounded-xl shadow-sm border border-gray-100"
+                >
+                  {/* Star Rating Display */}
+                  <div className="flex gap-1 mb-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <svg
+                        key={star}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill={star <= review.rating ? "#FACC15" : "#E5E7EB"} // Yellow for rated, Gray for unrated
+                        className="w-4 h-4"
+                      >
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Comment Section */}
+                  <p className="text-sm text-gray-600 italic leading-relaxed">
+                    {review.comment}
+                  </p>
+
+                  {/* Optional: User Name or Date */}
+                  <div className="mt-2 text-[10px] text-gray-400 font-medium uppercase tracking-wider">
+                    {review.name || "Anonymous Customer"}
+                  </div>
+                </div>
+              ))}
+
+              {/* If no reviews found */}
+              {meal?.reviews?.length === 0 && (
+                <p className="text-gray-400 text-sm text-center py-4">
+                  No reviews yet for this meal.
+                </p>
+              )}
             </div>
           </div>
         </div>
       )}
 
-     <div className="m-3">
-         <MealDetailsClient meal={meal}></MealDetailsClient>
-     </div>
+      <div className="m-3">
+        <MealDetailsClient meal={meal}></MealDetailsClient>
+      </div>
     </div>
   );
 };

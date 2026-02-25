@@ -32,6 +32,7 @@ const CategoryById = async ({
           fill
           className="object-cover transition-transform duration-1000 group-hover:scale-105"
           priority
+          unoptimized
         />
         <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent flex flex-col justify-center p-8 md:p-16 text-white">
           <h2 className="text-5xl md:text-7xl font-black mb-4 uppercase tracking-tighter">
@@ -72,6 +73,7 @@ const CategoryById = async ({
                     src={meal.image_url}
                     alt={meal.name}
                     fill
+                    unoptimized
                     className="object-cover transition-transform duration-500 group-hover/card:scale-110"
                   />
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-2xl text-orange-600 font-black shadow-sm">

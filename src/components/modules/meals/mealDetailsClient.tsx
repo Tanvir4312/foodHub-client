@@ -93,6 +93,7 @@ const MealDetailsClient = ({
                 alt=""
                 width={200}
                 height={200}
+                unoptimized
                 className="w-20 h-20 object-cover rounded-xl"
               />
               <div>

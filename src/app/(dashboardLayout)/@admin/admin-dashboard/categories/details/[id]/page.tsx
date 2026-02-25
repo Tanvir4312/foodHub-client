@@ -21,7 +21,7 @@ const CategoryDetails = async ({
           <Image
             src={category.image_url}
             alt={category.name}
-        
+            unoptimized
             fill
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />

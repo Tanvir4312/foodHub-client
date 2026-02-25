@@ -6,4 +6,5 @@ export interface ProviderType {
   logo_url: string;
   meals: [];
   name: string;
+  phone_number : string
 }

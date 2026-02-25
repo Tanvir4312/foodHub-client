@@ -97,6 +97,7 @@ const ShowCartData = ({
                 alt={logo_url || "Food"}
                 fill
                 className="object-cover"
+                unoptimized
               />
             )}
           </div>
@@ -126,6 +127,7 @@ const ShowCartData = ({
                       alt={item.meal.name || "Food"}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">

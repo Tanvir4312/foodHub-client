@@ -11,8 +11,6 @@ import { MealType } from "@/types/meal.type";
 import { Info, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-
 
 const ProviderDetailsWithMenu = async ({
   params,
@@ -35,6 +33,7 @@ const ProviderDetailsWithMenu = async ({
                 alt={providerData?.name}
                 width={200}
                 height={200}
+                unoptimized
                 className="w-full h-full object-cover"
               />
             </div>
@@ -95,6 +94,7 @@ const ProviderDetailsWithMenu = async ({
                       alt={meal?.name as string}
                       width={200}
                       height={200}
+                      unoptimized
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
@@ -122,7 +122,11 @@ const ProviderDetailsWithMenu = async ({
                           <DialogTitle>Meal Details</DialogTitle>
                         </DialogHeader>
 
-                        <MealDetailsClient meal={meal} forceOpen={true} text="order"/>
+                        <MealDetailsClient
+                          meal={meal}
+                          forceOpen={true}
+                          text="order"
+                        />
                       </DialogContent>
                     </Dialog>
                     <Dialog>
@@ -136,7 +140,11 @@ const ProviderDetailsWithMenu = async ({
                           <DialogTitle>Meal Details</DialogTitle>
                         </DialogHeader>
 
-                        <MealDetailsClient meal={meal} forceOpen={true} text="cart"/>
+                        <MealDetailsClient
+                          meal={meal}
+                          forceOpen={true}
+                          text="cart"
+                        />
                       </DialogContent>
                     </Dialog>
                   </div>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { env } from "@/env";
 import { ProviderProfile } from "@/types/providerProfile.type";
+import { ProviderProfileUpdateValue } from "@/types/providerProfileUpdate.type";
 
 import { cookies } from "next/headers";
 
@@ -64,19 +65,18 @@ export const providerServices = {
       return { data: null, error: { message: "providers not found" } };
     }
   },
-  createProviderProfile: async (providerProfileData : ProviderProfile) => {
+  createProviderProfile: async (providerProfileData: ProviderProfile) => {
     const cookieStore = await cookies();
     try {
       const url = new URL(`${API_URL}/provider/provider-profile`);
 
       const res = await fetch(url.toString(), {
-        method : "POST",
+        method: "POST",
         headers: {
           Cookie: cookieStore.toString(),
-          "Content-Type" : "application/json"
+          "Content-Type": "application/json",
         },
-        body : JSON.stringify(providerProfileData)
-      
+        body: JSON.stringify(providerProfileData),
       });
 
       const providerProfile = await res.json();
@@ -88,6 +88,38 @@ export const providerServices = {
         };
       }
       return { data: providerProfile, error: null };
+    } catch (e) {
+      return { data: null, error: { message: "providers not found" } };
+    }
+  },
+  updateProviderProfile: async (
+    updateProviderProfileData: ProviderProfileUpdateValue,
+    id: string,
+  ) => {
+    const cookieStore = await cookies();
+    try {
+      const url = new URL(`${API_URL}/provider/provider-profile/${id}`);
+
+      const res = await fetch(url.toString(), {
+        method: "PUT",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateProviderProfileData),
+      });
+
+      const updateProviderProfile = await res.json();
+
+      if (!res.ok) {
+        return {
+          data: null,
+          error: {
+            message: updateProviderProfile.message || "providers not found",
+          },
+        };
+      }
+      return { data: updateProviderProfile, error: null };
     } catch (e) {
       return { data: null, error: { message: "providers not found" } };
     }

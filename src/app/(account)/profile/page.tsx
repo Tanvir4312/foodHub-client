@@ -36,6 +36,7 @@ const Profile = async () => {
                     alt="Profile"
                     width={100}
                     height={100}
+                    unoptimized
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -53,7 +54,7 @@ const Profile = async () => {
             {userData?.role === Roles.customer && (
               <button className="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-gray-800 transition-all shadow-md">
                 <Link
-                  href={`/profile-update`}
+                  href={`/customer-profile-update`}
                   className="flex items-center gap-2"
                 >
                   {" "}
@@ -62,6 +63,7 @@ const Profile = async () => {
                 </Link>
               </button>
             )}
+         
           </div>
 
           {/* User Basic Info */}

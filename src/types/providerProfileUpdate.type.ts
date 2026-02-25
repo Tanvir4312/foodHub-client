@@ -1,5 +1,5 @@
-export interface ProviderProfile {
-  id: string;
+export type ProviderProfileUpdateValue ={
+
   isAvailable: boolean;
   location: string;
   logo_url: string;

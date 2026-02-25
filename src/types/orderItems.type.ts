@@ -1,6 +1,7 @@
 export type OrderMealType = {
   name: string;
   price: number;
+  image_url: string;
 };
 
 export type OrderItemType = {

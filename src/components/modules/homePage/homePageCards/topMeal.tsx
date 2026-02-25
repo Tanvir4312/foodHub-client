@@ -14,6 +14,7 @@ const TopMealCard = ({ meal }: { meal: MealType }) => {
               src={meal.image_url as string}
               alt={meal.name as string}
               fill
+              unoptimized
               className="object-cover group-hover:scale-110 transition-transform duration-500"
             />
             {/* Badge for Rating */}

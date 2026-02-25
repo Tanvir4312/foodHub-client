@@ -42,9 +42,9 @@ const ProfileUpdate = () => {
   }, []);
   const form = useForm({
     defaultValues: {
-      name: user?.name,
-      phone_number: user?.phone_number,
-      image: user?.image,
+      name: user?.name || "",
+      phone_number: user?.phone_number || "",
+      image: user?.image || "",
     },
     validators: {
       onSubmit: formSchema,

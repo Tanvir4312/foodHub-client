@@ -14,6 +14,7 @@ const ProviderCard = ({ provider }: { provider: ProviderType }) => {
               src={provider.logo_url}
               alt={provider.name}
               fill
+              unoptimized
               className={`object-cover ${!provider.isAvailable ? "grayscale opacity-70" : "hover:scale-105"} transition-all duration-500`}
             />
             {!provider.isAvailable && (
@@ -53,9 +54,20 @@ const ProviderCard = ({ provider }: { provider: ProviderType }) => {
               <span className="text-sm font-bold text-gray-400">
                 Quick Delivery
               </span>
-              <button className="bg-orange-600 hover:bg-black text-white px-6 py-2 rounded-xl font-bold transition-colors duration-300 cursor-pointer">
-               <Link href={`/providers/menu/${provider.id}`}> MENU</Link>
-              </button>
+              {provider.isAvailable ? (
+                <Link href={`/restaurant/menu/${provider.id}`}>
+                  <button className="bg-orange-600 hover:bg-black text-white px-6 py-2 rounded-xl font-bold transition-colors duration-300 cursor-pointer">
+                    MENU
+                  </button>
+                </Link>
+              ) : (
+                <button
+                  disabled
+                  className="bg-gray-400 text-white px-6 py-2 rounded-xl font-bold cursor-not-allowed opacity-70"
+                >
+                  MENU
+                </button>
+              )}
             </div>
           </div>
         </div>

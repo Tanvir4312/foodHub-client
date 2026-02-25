@@ -78,7 +78,7 @@ const OrderStatusUpdate = ({
             >
               CANCELLED
             </DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+        
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

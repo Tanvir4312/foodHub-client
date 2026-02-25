@@ -36,6 +36,7 @@ const MyMealsDetails = async ({
             fill
             className="object-cover transform hover:scale-105 transition-transform duration-700"
             priority
+            unoptimized
           />
           <div className="absolute top-6 left-6 flex gap-2">
             <span className="px-5 py-2 bg-white/90 backdrop-blur-md rounded-2xl text-xs font-black uppercase tracking-widest text-orange-600 shadow-sm">
@@ -116,21 +117,11 @@ const MyMealsDetails = async ({
               className="bg-gray-50/50 p-8 rounded-4xl border border-gray-100 hover:bg-white hover:shadow-xl transition-all group"
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="relative w-14 h-14 rounded-2xl overflow-hidden shadow-sm">
-                  {/* <Image
-                    fill
-                    src={
-                      rev.user_image ||
-                      `https://api.dicebear.com/7.x/avataaars/svg?seed=${idx}`
-                    }
-                    className="object-cover"
-                    alt="user"
-                  /> */}
-                </div>
+               
                 <div>
-                  {/* <h4 className="font-bold text-gray-900">
-                    {rev?.user || "Happy Customer"}
-                  </h4> */}
+                  <h4 className="font-bold text-gray-900">
+                    {rev?.name || "Happy Customer"}
+                  </h4>
                   {/*--------------- User er name nibo ----------------------------*/}
                   <div className="flex text-orange-400 text-xs">
                     {"★".repeat(rev.rating || 5)}
