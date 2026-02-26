@@ -28,7 +28,7 @@ export function AppSidebar({
     <Sidebar {...props}>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
-        {routes.map((item) => (
+        {routes?.map((item) => (
           <Link key={item.title} href={item.url}>
             {item.title}
           </Link>

@@ -43,6 +43,7 @@ import { Roles } from "@/constrants/roles";
 import { adminRoute } from "@/routes/adminRoute";
 import { providerRoute } from "@/routes/providerRoute";
 import { customerRoute } from "@/routes/customerRoute";
+import { useRouter } from "next/navigation";
 
 interface MenuItem {
   title: string;
@@ -102,6 +103,7 @@ const Navbar = ({
   const [trigger, setTrigger] = useState(false);
   const { data: session } = authClient.useSession();
   const [count, setCount] = useState(null);
+  const router = useRouter();
 
   const userData = session?.user;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -218,7 +220,15 @@ const Navbar = ({
                         <MdLogout className="text-lg font-semibold" />
                         <Button
                           onClick={async () => {
-                            await authClient.signOut();
+                            await authClient.signOut({
+                              fetchOptions: {
+                                onSuccess: () => {
+                                  router.push("/login");
+
+                                  router.refresh();
+                                },
+                              },
+                            });
                           }}
                           className="text-lg font-semibold cursor-pointer"
                         >
