@@ -29,9 +29,6 @@ const formSchema = z.object({
     .regex(/^[0-9]+$/, "Only numbers allowed"),
 });
 
-
-
-
 const ProviderDashboard = () => {
   const form = useForm({
     defaultValues: {
@@ -46,8 +43,6 @@ const ProviderDashboard = () => {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-
-
       const providerProfileData = {
         name: value?.name,
         description: value?.description,
@@ -62,6 +57,7 @@ const ProviderDashboard = () => {
 
         if (res.error) {
           toast.error(res.error.message, { id: toastId });
+          return;
         }
         toast.success("Profile Successfully created", { id: toastId });
       } catch (err) {
@@ -91,7 +87,7 @@ const ProviderDashboard = () => {
                     htmlFor={field.name}
                     className="text-sm font-bold text-gray-700 uppercase tracking-wider ml-1"
                   >
-                   Name
+                    Name
                   </FieldLabel>
                   <Input
                     id={field.name}

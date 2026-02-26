@@ -26,7 +26,7 @@ const Footer = () => {
             <ul className="mt-4 space-y-2">
               <li>
                 <Link
-                  href="/about"
+                  href="#"
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   About Us
@@ -42,7 +42,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="#"
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   Contact
@@ -59,7 +59,7 @@ const Footer = () => {
             <ul className="mt-4 space-y-2">
               <li>
                 <Link
-                  href="/privacy"
+                  href="#"
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   Privacy Policy
@@ -67,7 +67,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/terms"
+                  href="#"
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   Terms of Service

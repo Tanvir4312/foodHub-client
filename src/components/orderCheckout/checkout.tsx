@@ -6,7 +6,7 @@ import { MealType } from "@/types/meal.type";
 import { ProviderType } from "@/types/provider.type";
 import { useForm } from "@tanstack/react-form";
 import * as z from "zod";
-import { Field, FieldGroup, FieldLabel } from "../ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
@@ -14,9 +14,22 @@ import { createOrderAction } from "@/action/order.action";
 import { OrderDataType } from "@/types/orderData.type";
 
 const orderSchema = z.object({
-  street: z.string().min(5, "Address is too short").max(100, ""),
-  apartment: z.string().min(1, "Apartment/House info is required"),
-  phone: z.string(),
+  street: z
+    .string()
+    .min(5, "Address is too short (min 5 characters)")
+    .max(100, "Address is too long (max 100 characters)"),
+
+  apartment: z
+    .string()
+    .min(1, "Apartment or House info is required")
+    .max(50, "Too long"),
+
+  phone: z
+    .string()
+    .min(11, "Phone number must be at least 11 digits")
+    .max(15, "Phone number is too long")
+    .regex(/^[0-9+]+$/, "Invalid phone number format"),
+
   note: z.string(),
 });
 
@@ -118,6 +131,9 @@ const Checkout = ({
               <FieldGroup>
                 <form.Field name="street">
                   {(field) => {
+                    const isInvalid =
+                      field.state.meta.isTouched &&
+                      field.state.meta.errors.length > 0;
                     return (
                       <Field>
                         <FieldLabel htmlFor={field.name}>
@@ -128,9 +144,18 @@ const Checkout = ({
                           name={field.name}
                           value={field.state.value}
                           placeholder="Street / House Number"
-                          className=" focus:ring-pink-500"
+                          className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none
+                    ${
+                      isInvalid
+                        ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
+                        : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    }`}
                           onChange={(e) => field.handleChange(e.target.value)}
                         ></Input>
+                        <FieldError
+                          className="text-red-700"
+                          errors={field.state.meta.errors}
+                        ></FieldError>
                       </Field>
                     );
                   }}
@@ -138,6 +163,9 @@ const Checkout = ({
 
                 <form.Field name="apartment">
                   {(field) => {
+                    const isInvalid =
+                      field.state.meta.isTouched &&
+                      field.state.meta.errors.length > 0;
                     return (
                       <Field>
                         <FieldLabel htmlFor={field.name}>Apartment</FieldLabel>
@@ -146,9 +174,18 @@ const Checkout = ({
                           name={field.name}
                           value={field.state.value}
                           placeholder="Apartment #"
-                          className="focus:ring-pink-500"
+                          className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none
+                    ${
+                      isInvalid
+                        ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
+                        : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    }`}
                           onChange={(e) => field.handleChange(e.target.value)}
                         ></Input>
+                        <FieldError
+                          className="text-red-700"
+                          errors={field.state.meta.errors}
+                        ></FieldError>
                       </Field>
                     );
                   }}
@@ -156,6 +193,9 @@ const Checkout = ({
 
                 <form.Field name="phone">
                   {(field) => {
+                    const isInvalid =
+                      field.state.meta.isTouched &&
+                      field.state.meta.errors.length > 0;
                     return (
                       <Field>
                         <FieldLabel htmlFor={field.name}>
@@ -166,9 +206,18 @@ const Checkout = ({
                           name={field.name}
                           value={field.state.value}
                           placeholder="e.g. 017XXXXXXXX"
-                          className="focus:ring-pink-500"
+                          className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none
+                    ${
+                      isInvalid
+                        ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
+                        : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    }`}
                           onChange={(e) => field.handleChange(e.target.value)}
                         ></Input>
+                        <FieldError
+                          className="text-red-700"
+                          errors={field.state.meta.errors}
+                        ></FieldError>
                       </Field>
                     );
                   }}

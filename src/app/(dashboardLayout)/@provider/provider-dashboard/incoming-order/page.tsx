@@ -22,7 +22,7 @@ const IncomingOrder = async () => {
   const incomingOrder = res?.data;
   return (
     <div>
-      {incomingOrder.length > 0 ? (
+      {incomingOrder?.length > 0 ? (
         <Table>
           <TableHeader>
             <TableRow>
@@ -46,7 +46,9 @@ const IncomingOrder = async () => {
                   })}
                 </TableCell>
                 <TableCell>{order.total_amount}</TableCell>
-                <TableCell>{order.status}</TableCell>
+                <TableCell className={`${order.status === "DELIVERED" && "text-green-600 font-bold"}
+                ${order.status === "PENDING" && "text-red-600"}
+                `}>{order.status}</TableCell>
 
                 <TableCell className="font-bold hover:text-amber-600 cursor-pointer">
                   <Link href={`/provider-dashboard/incoming-order/${order.id}`}>

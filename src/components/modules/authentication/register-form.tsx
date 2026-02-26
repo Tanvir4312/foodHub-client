@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {
   Card,
@@ -182,11 +183,10 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
         >
           Register
         </Button>
-        
       </CardFooter>
       <FieldDescription className="text-center">
-          Already have an account? <Link href="/login">Login</Link>
-        </FieldDescription>
+        Already have an account? <Link href="/login">Login</Link>
+      </FieldDescription>
     </Card>
   );
 }
