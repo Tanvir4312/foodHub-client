@@ -54,7 +54,7 @@ export function LoginForm({
           return;
         }
         toast.success("User logged in successfully", { id: toastId });
-        router.push("/");
+        window.location.href = "/";
       } catch (err) {
         toast.error("Something went wrong, Please try again", { id: toastId });
       }

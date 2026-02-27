@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 const AUTH_URL = env.AUTH_URL;
 const API_URL = env.API_URL;
-export const services = {
+export const services= {
   getSessionService: async () => {
     try {
       const cookieStore = await cookies();
@@ -15,7 +15,7 @@ export const services = {
           Cookie: cookieStore.toString(),
         },
         cache: "no-store",
-      });
+      })
       const session = await res.json();
 
       if (session.data === "null") {

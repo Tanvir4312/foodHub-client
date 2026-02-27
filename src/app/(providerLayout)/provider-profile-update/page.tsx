@@ -41,6 +41,8 @@ const ProviderProfileUpdate = () => {
     })();
   }, []);
 
+  console.log(user)
+
   const form = useForm({
     defaultValues: {
       name: user?.name || "",
@@ -54,6 +56,7 @@ const ProviderProfileUpdate = () => {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }: { value: ProviderProfileUpdateValue }) => {
+      
       const toastId = toast.loading("Updating...");
 
       const updateData = {
@@ -71,6 +74,7 @@ const ProviderProfileUpdate = () => {
         const res = await updateProviderProfileAction(updateData, user?.id);
       
         if (res.error) {
+        
           toast.error(res.error.message, { id: toastId });
           return;
         }
