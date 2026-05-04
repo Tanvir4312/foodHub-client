@@ -53,5 +53,31 @@ export const reviewServices = {
     } catch (err) {
       return { data: null, error: { message: "Something went wrong" } };
     }
+  },
+  getMyReviewsService: async () => {
+    try {
+      const url = new URL(`${API_URL}/reviews/my-reviews`);
+      const cookieStore = await cookies();
+
+      const res = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+        next: { tags: ["review-data"] }
+      });
+      const reviews = await res.json();
+
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: reviews.message || "Something went wrong!" },
+        };
+      }
+      return { data: reviews, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong" } };
+    }
   }
 };

@@ -180,19 +180,36 @@ const Navbar = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-[#f54a00] mb-0.5 ml-0.5 self-end" />
               </a>
 
-              <div className="flex items-center">
+              <div className="flex items-center gap-5">
                 <NavigationMenu>
                   <NavigationMenuList>
                     {menu?.map((item) => renderMenuItem(item))}
-                    {
-                      sessionRole === Roles.admin && <Link href="/admin-dashboard">Dashboard</Link>
-                    }
-                    {
-                      sessionRole === Roles.provider && <Link href="/provider-dashboard">Dashboard</Link>
-                    }
-                    {
-                      sessionRole === Roles.customer && <Link href="/customer-dashboard">My Orders</Link>
-                    }
+                    <div className="flex gap-8 items-center text-sm opacity-90">
+
+
+                      <div className="ml-3">
+                        {
+                          sessionRole === Roles.customer &&
+                          <div className="flex gap-6 items-center">
+                            <Link href="/customer-dashboard">My Orders</Link>
+                            <Link href="/customer-dashboard/my-reviews">My Reviews</Link>
+                          </div>
+                        }
+                        {
+                          sessionRole === Roles.provider &&
+                          <div className="flex gap-6 items-center">
+                            <Link href="/provider-dashboard/incoming-order">Incoming Order</Link>
+                            <Link href="/provider-dashboard/stats">Stats</Link>
+                          </div>
+                        }
+                        {
+                          sessionRole === Roles.admin &&
+                          <div className="flex gap-6 items-center">
+                            <Link href="/admin-dashboard">Dashboard</Link>
+                          </div>
+                        }
+                      </div>
+                    </div>
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
@@ -238,7 +255,7 @@ const Navbar = ({
                               className="flex items-center gap-2 w-full"
                             >
                               <ImProfile className="text-[#f54a00]" />
-                              My Profile
+                              Provider's Profile
                             </Link>
                           </DropdownMenuLabel>
                         )}
@@ -387,15 +404,33 @@ const Navbar = ({
                         className="flex w-full flex-col gap-4"
                       >
                         {menu?.map((item) => renderMobileMenuItem(item))}
-                        {
-                          sessionRole === Roles.admin && <Link href="/admin-dashboard">Dashboard</Link>
-                        }
-                        {
-                          sessionRole === Roles.provider && <Link href="/provider-dashboard">Dashboard</Link>
-                        }
-                        {
-                          sessionRole === Roles.customer && <Link href="/customer-dashboard">My Orders</Link>
-                        }
+                        <div className="font-semibold text-[14px]">
+
+
+
+
+                          {
+                            sessionRole === Roles.customer &&
+                            <div className="flex flex-col gap-6">
+                              <Link href="/customer-dashboard">My Orders</Link>
+                              <Link href="/customer-dashboard/my-reviews">My Reviews</Link>
+                            </div>
+                          }
+                          {
+                            sessionRole === Roles.provider &&
+                            <div className="flex flex-col gap-6">
+                              <Link href="/provider-dashboard/incoming-order">Incoming Order</Link>
+                              <Link href="/provider-dashboard/stats">Stats</Link>
+                            </div>
+                          }
+                          {
+                            sessionRole === Roles.admin &&
+                            <div className="flex flex-col gap-6">
+                              <Link href="/admin-dashboard">Dashboard</Link>
+                            </div>
+                          }
+                        </div>
+
                       </Accordion>
 
                       {userData && (
@@ -436,7 +471,7 @@ const Navbar = ({
                                       className="flex items-center gap-2 w-full"
                                     >
                                       <ImProfile className="text-[#f54a00]" />
-                                      My Profile
+                                      Provider's Profile
                                     </Link>
                                   </DropdownMenuLabel>
                                 )}

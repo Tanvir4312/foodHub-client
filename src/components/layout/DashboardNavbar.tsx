@@ -110,51 +110,63 @@ export function DashboardNavbar({ userName, userRole, userImage }: DashboardNavb
                     <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 hidden lg:block" />
 
                     {/* User Dropdown */}
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <button className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all outline-none">
-                                {/* Avatar */}
-                                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-sm ring-2 ring-orange-500/10 overflow-hidden shadow-sm">
-                                    {userImage ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
-                                        <img src={userImage} alt={userName} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <span>{userName?.charAt(0)?.toUpperCase() || "U"}</span>
-                                    )}
-                                </div>
+                    {mounted ? (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all outline-none">
+                                    {/* Avatar */}
+                                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-sm ring-2 ring-orange-500/10 overflow-hidden shadow-sm">
+                                        {userImage ? (
+                                            // eslint-disable-next-line @next/next/no-img-element
+                                            <img src={userImage} alt={userName} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span>{userName?.charAt(0)?.toUpperCase() || "U"}</span>
+                                        )}
+                                    </div>
 
-                                {/* Name & Role */}
-                                <div className="hidden lg:flex flex-col text-left">
-                                    <span className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
-                                        {userName || "User"}
-                                    </span>
-                                    {userRole && (
-                                        <span className={`text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md w-fit mt-0.5 ${roleColor[userRole] || "bg-slate-100 text-slate-600"}`}>
-                                            {userRole}
+                                    {/* Name & Role */}
+                                    <div className="hidden lg:flex flex-col text-left">
+                                        <span className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
+                                            {userName || "User"}
                                         </span>
-                                    )}
-                                </div>
-                            </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 mt-2 rounded-2xl p-2 shadow-2xl bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
-                            <DropdownMenuLabel className="px-3 py-2 text-xs font-black uppercase tracking-widest text-slate-400">
-                                My Account
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800" />
-                            <DropdownMenuItem className="rounded-xl px-3 py-2.5 gap-3 cursor-pointer focus:bg-orange-50 dark:focus:bg-orange-500/10 focus:text-orange-600 transition-colors">
-                                <User size={18} className="text-slate-400 group-focus:text-orange-500" />
-                                <Link href={"/profile"}> <span className="font-semibold text-sm">My Profile</span></Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800" />
-                            <DropdownMenuItem
-                                onClick={handleLogout}
-                                className="rounded-xl px-3 py-2.5 gap-3 cursor-pointer focus:bg-rose-50 dark:focus:bg-rose-500/10 focus:text-rose-600 transition-colors"
-                            >
-                                <LogOut size={18} className="text-slate-400" />
-                                <span className="font-semibold text-sm">Logout</span>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                                        {userRole && (
+                                            <span className={`text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md w-fit mt-0.5 ${roleColor[userRole] || "bg-slate-100 text-slate-600"}`}>
+                                                {userRole}
+                                            </span>
+                                        )}
+                                    </div>
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-56 mt-2 rounded-2xl p-2 shadow-2xl bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
+                                <DropdownMenuLabel className="px-3 py-2 text-xs font-black uppercase tracking-widest text-slate-400">
+                                    My Account
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800" />
+                                <DropdownMenuItem asChild className="rounded-xl px-3 py-2.5 gap-3 cursor-pointer focus:bg-orange-50 dark:focus:bg-orange-500/10 focus:text-orange-600 transition-colors">
+                                    <Link href="/profile" className="flex items-center gap-3 w-full">
+                                        <User size={18} className="text-slate-400 group-focus:text-orange-500" />
+                                        <span className="font-semibold text-sm">My Profile</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800" />
+                                <DropdownMenuItem 
+                                    onClick={handleLogout}
+                                    className="rounded-xl px-3 py-2.5 gap-3 cursor-pointer focus:bg-rose-50 dark:focus:bg-rose-500/10 focus:text-rose-600 transition-colors"
+                                >
+                                    <LogOut size={18} className="text-slate-400" />
+                                    <span className="font-semibold text-sm">Logout</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    ) : (
+                        <div className="flex items-center gap-3 p-1">
+                            <div className="w-9 h-9 rounded-xl bg-slate-200 dark:bg-slate-800 animate-pulse" />
+                            <div className="hidden lg:flex flex-col gap-1">
+                                <div className="h-3 w-20 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+                                <div className="h-2 w-12 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </header>

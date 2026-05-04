@@ -81,6 +81,12 @@ const ProviderDetailsWithMenu = async ({
 
           {/* Meal Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {providerData?.meals?.length === 0 && (
+              <div className="col-span-full text-center text-2xl font-bold text-red-500 py-20 rounded-2xl border border-gray-200 bg-gray-50 tracking-wide shadow-sm">
+                No meals Available right now
+              </div>
+            )}
+
             {providerData?.meals?.map((meal: MealType) => (
               <div
                 key={meal.id}

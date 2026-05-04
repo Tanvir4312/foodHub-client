@@ -37,6 +37,7 @@ import {
   Settings,
   X,
   UserCircle,
+  Heart,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -52,6 +53,8 @@ const iconMap: Record<string, React.ReactNode> = {
   "Add Meal": <PlusCircle className="size-4" />,
   "My Meals": <UtensilsCrossed className="size-4" />,
   "My Orders": <ShoppingBag className="size-4" />,
+  "My Reviews": <Heart className="size-4" />,
+  "Offers": <UtensilsCrossed className="size-4" />,
   "Home": <Home className="size-4" />,
 };
 
@@ -161,7 +164,7 @@ export function AppSidebar({
           <SidebarGroupContent>
             <SidebarMenu className="gap-0.5">
               {routes.map((item) => {
-                const isActive = pathname === item.url || (item.url !== "/" && pathname?.startsWith(item.url));
+                const isActive = pathname === item.url;
 
                 return (
                   <SidebarMenuItem key={item.title}>

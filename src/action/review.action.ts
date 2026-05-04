@@ -13,3 +13,7 @@ export const getReviewsForHomePageAction = async () => {
   const result = await reviewServices.getReviewsForHomePageService();
   return result;
 };
+export const getMyReviewsAction = async () => {
+  const result = await reviewServices.getMyReviewsService();
+  return result;
+};

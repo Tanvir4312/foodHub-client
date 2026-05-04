@@ -46,7 +46,7 @@ export default function SpecialOffers({ activeCoupons }: { activeCoupons: Coupon
     }, []);
 
     return (
-        <section className="py-16 px-4 bg-gray-50 dark:bg-zinc-900">
+        <section className="py-16 px-4 bg-gray-50 dark:bg-zinc-900 rounded-2xl shadow">
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}

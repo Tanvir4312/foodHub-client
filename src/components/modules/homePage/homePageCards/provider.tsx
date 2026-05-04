@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { MealType } from "@/types/meal.type";
 import { ProviderType } from "@/types/provider.type";
 import Image from "next/image";
@@ -5,7 +6,7 @@ import Link from "next/link";
 
 const ProviderCard = ({ provider }: { provider: ProviderType }) => {
   return (
-    <div>
+    <div className={cn("group", !provider.isAvailable && "pointer-events-none opacity-70")}>
       <Link href={`/restaurant/menu/${provider.id}`}>
         <div className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 dark:hover:border-zinc-600 group">
 
