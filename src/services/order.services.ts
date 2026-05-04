@@ -27,6 +27,13 @@ export const orderServices = {
           error: { message: order.message || "Something went wrong!" },
         };
       }
+      if (!res.ok) {
+        console.log("Order error response:", order); // ← এটা add করুন
+        return {
+          data: null,
+          error: { message: order.message || "Something went wrong!" },
+        };
+      }
       return { data: order, error: null };
     } catch (err) {
       return { data: null, error: { message: "Something went wrong" } };

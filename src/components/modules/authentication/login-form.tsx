@@ -50,6 +50,7 @@ export function LoginForm({
       try {
         const { data, error } = await authClient.signIn.email(value);
         if (error) {
+          console.log("🚀 ~ LoginForm ~ err:", error)
           toast.error(error.message, { id: toastId });
           return;
         }

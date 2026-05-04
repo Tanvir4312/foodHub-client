@@ -1,15 +1,16 @@
 import Footer from "@/components/layout/Footer";
-import { Navbar } from "@/components/layout/Navbar";
 import React from "react";
+
+import NavbarWrapper from "@/components/layout/NavbarWrapper";
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
+      <NavbarWrapper />
       <div className="max-w-7xl mx-auto">
-        <Navbar />
+        {children}
       </div>
-      {children}
-      <Footer/>
+      <Footer />
     </div>
   );
 };

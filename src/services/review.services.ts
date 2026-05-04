@@ -31,4 +31,27 @@ export const reviewServices = {
       return { data: null, error: { message: "Something went wrong" } };
     }
   },
+
+  getReviewsForHomePageService: async () => {
+    try {
+      const url = new URL(`${API_URL}/reviews`);
+
+
+      const res = await fetch(url.toString(), {
+        method: "GET",
+        next: { tags: ["review-data"] }
+      });
+      const reviews = await res.json();
+
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: reviews.message || "Something went wrong!" },
+        };
+      }
+      return { data: reviews, error: null };
+    } catch (err) {
+      return { data: null, error: { message: "Something went wrong" } };
+    }
+  }
 };

@@ -75,22 +75,22 @@ export function Hero() {
       <CarouselContent>
         {bannerData?.map((item) => (
           <CarouselItem key={item.id}>
-            <div className="p-1">
+            <div className="px-5 lg:px-0">
               {" "}
               <Card className="overflow-hidden border-none shadow-sm rounded-xl">
-                <CardContent className="relative h-125 w-full p-0">
+                <CardContent className="relative h-[70vh] w-full">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
                     className="object-cover transition-transform duration-500 hover:scale-105"
                     priority={item.id === 1}
-                 
+
                   />
 
-                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none text-white flex flex-col justify-end p-8 md:p-16 animate-in slide-in-from-bottom">
-                   <p className="text-2xl font-semibold"> {item.title}</p>
-                   <p className="text-xl opacity-50">{item.description}</p>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none text-slate-50 flex flex-col justify-end p-8 md:p-16 animate-in slide-in-from-bottom tracking-tighter">
+                    <p className="text-2xl font-semibold"> {item.title}</p>
+                    <p className="text-xl opacity-70">{item.description}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -99,8 +99,7 @@ export function Hero() {
         ))}
       </CarouselContent>
 
-      <CarouselPrevious className="hidden md:flex -left-12" />
-      <CarouselNext className="hidden md:flex -right-12" />
+
     </Carousel>
   );
 }

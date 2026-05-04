@@ -3,24 +3,61 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --surface: #ffffff;
+  --surface-50: #f9fafb;
+  --surface-100: #f3f4f6;
+  --surface-200: #e5e7eb;
+  
+  --text-900: #111827;
+  --text-800: #1f2937;
+  --text-700: #374151;
+  --text-600: #4b5563;
+  --text-500: #6b7280;
+  --text-400: #9ca3af;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --surface: #121212;
+  --surface-50: #0a0a0a;
+  --surface-100: #1f2937;
+  --surface-200: #374151;
+
+  --text-900: #f9fafb;
+  --text-800: #f3f4f6;
+  --text-700: #e5e7eb;
+  --text-600: #d1d5db;
+  --text-500: #9ca3af;
+  --text-400: #6b7280;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Root level overrides for dark mode auto-adaptation */
+  --color-white: var(--surface);
+  --color-gray-50: var(--surface-50);
+  --color-gray-100: var(--surface-100);
+  --color-gray-200: var(--surface-200);
+  
+  --color-gray-400: var(--text-400);
+  --color-gray-500: var(--text-500);
+  --color-gray-600: var(--text-600);
+  --color-gray-700: var(--text-700);
+  --color-gray-800: var(--text-800);
+  --color-gray-900: var(--text-900);
+  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@custom-variant dark (&:is(.dark *));
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

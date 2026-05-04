@@ -11,27 +11,16 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
 import { createOrderAction } from "@/action/order.action";
+import { deleteCartAction } from "@/action/addToCart.action";
 import { OrderDataType } from "@/types/orderData.type";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { orderSchema } from "../zod/checkOut.validation";
+import { ShowSkeleton } from "../SharedSkileton/Skileton/Skileton";
 
-const orderSchema = z.object({
-  street: z
-    .string()
-    .min(5, "Address is too short (min 5 characters)")
-    .max(100, "Address is too long (max 100 characters)"),
 
-  apartment: z
-    .string()
-    .min(1, "Apartment or House info is required")
-    .max(50, "Too long"),
 
-  phone: z
-    .string()
-    .min(11, "Phone number must be at least 11 digits")
-    .max(15, "Phone number is too long")
-    .regex(/^[0-9+]+$/, "Invalid phone number format"),
 
-  note: z.string(),
-});
 
 const Checkout = ({
   meal,
@@ -52,7 +41,67 @@ const Checkout = ({
 
   const serviceFee = Math.floor(totalPrice * 0.1);
 
-  const totalFee = Math.ceil(totalPrice + deliveryFee + Number(serviceFee));
+  // --- Hydration state ---
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // --- Order success state ---
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const router = useRouter();
+
+  // --- Coupon state ---
+  const [couponInput, setCouponInput] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discount: number;
+  } | null>(null);
+
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    setCouponLoading(true);
+    console.log("coupon input", couponInput);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/coupons/validate`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ code: couponInput }),
+        }
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        toast.error(err.message || "Invalid coupon");
+        return;
+      }
+      const data = await res.json();
+      console.log("coupon validated", data);
+      setAppliedCoupon({ code: data.code, discount: data.discount });
+      toast.success(`${data.discount}% discount applied!`);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+  };
+  // --- Coupon state end ---
+
+  const discountAmountSingle = appliedCoupon
+    ? Math.floor((totalPrice * appliedCoupon.discount) / 100)
+    : 0;
+  const totalFee = Math.ceil(
+    totalPrice - discountAmountSingle + deliveryFee + Number(serviceFee),
+  );
 
   const form = useForm({
     defaultValues: {
@@ -71,17 +120,18 @@ const Checkout = ({
 
       const items =
         cartItems?.length > 0
-          ? cartItems.map((item) => ({
-              mealId: item.meal.id,
-              quantity: item.quantity,
-            }))
-          : meal
+          ? cartItems.map((item: any) => ({
+            mealId: item.meal_id || item.meal?.id,
+            quantity: item.quantity,
+          }))
+          : meal?.id
             ? [{ mealId: meal.id, quantity: quantity }]
             : [];
       const orderData = {
         delivery_address: fullAddress,
         phone_number,
         items: items,
+        couponCode: appliedCoupon?.code ?? undefined,
       };
 
       try {
@@ -91,8 +141,24 @@ const Checkout = ({
           toast.error(res.error.message, { id: toastId });
           return;
         }
-        toast.success("Order Confirmed", { id: toastId });
+
+        // ✅ Order success: reset form + coupon
+        toast.success("Order Confirmed! Your food is on the way.", { id: toastId });
         form.reset();
+        setAppliedCoupon(null);
+        setCouponInput("");
+        setOrderSuccess(true);
+
+        // If ordered from cart, delete the whole cart from backend
+        if (cartItems?.length > 0 && carts?.id) {
+          await deleteCartAction(carts.id);
+        }
+
+        // Trigger Navbar to update its cart count instantly
+        window.dispatchEvent(new Event("cartUpdated"));
+
+        // Refresh server components
+        router.refresh();
       } catch (err) {
         toast.error("Something went wrong", { id: toastId });
       }
@@ -103,15 +169,19 @@ const Checkout = ({
     cartItems?.reduce((total, item) => total + item.price, 0) * 0.1;
   const servicesFee = Math.floor(serviceFees);
 
-  const total =
-    cartItems?.reduce((total, item) => total + item.price, 0) +
-    deliveryFee +
-    serviceFees;
+  const cartSubtotal = cartItems?.reduce((total, item) => total + item.price, 0) ?? 0;
+  const discountAmountCart = appliedCoupon
+    ? Math.floor((cartSubtotal * appliedCoupon.discount) / 100)
+    : 0;
+  const total = cartSubtotal - discountAmountCart + deliveryFee + serviceFees;
 
   const totalAmount = Math.floor(total);
 
+  // Show skeleton during hydration or if critical data isn't provided yet
+  if (!isMounted || (!carts?.id && !meal?.id) || !provider) return <ShowSkeleton />;
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 p-4 my-10 rounded-lg md:p-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <h1 className="text-2xl font-bold text-gray-800">
@@ -145,11 +215,10 @@ const Checkout = ({
                           value={field.state.value}
                           placeholder="Street / House Number"
                           className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none
-                    ${
-                      isInvalid
-                        ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
-                        : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                    }`}
+                    ${isInvalid
+                              ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
+                              : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                            }`}
                           onChange={(e) => field.handleChange(e.target.value)}
                         ></Input>
                         <FieldError
@@ -175,11 +244,10 @@ const Checkout = ({
                           value={field.state.value}
                           placeholder="Apartment #"
                           className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none
-                    ${
-                      isInvalid
-                        ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
-                        : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                    }`}
+                    ${isInvalid
+                              ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
+                              : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                            }`}
                           onChange={(e) => field.handleChange(e.target.value)}
                         ></Input>
                         <FieldError
@@ -207,11 +275,10 @@ const Checkout = ({
                           value={field.state.value}
                           placeholder="e.g. 017XXXXXXXX"
                           className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none
-                    ${
-                      isInvalid
-                        ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
-                        : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                    }`}
+                    ${isInvalid
+                              ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
+                              : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                            }`}
                           onChange={(e) => field.handleChange(e.target.value)}
                         ></Input>
                         <FieldError
@@ -255,6 +322,47 @@ const Checkout = ({
               <div className="h-4 w-4 rounded-full bg-pink-600"></div>
             </div>
           </div>
+
+          {/* Coupon Field */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h2 className="text-xl font-semibold mb-3">Coupon Code</h2>
+            {appliedCoupon ? (
+              <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                <div>
+                  <span className="text-sm font-bold text-green-700">
+                    {appliedCoupon.code}
+                  </span>
+                  <span className="text-sm text-green-600 ml-2">
+                    -{appliedCoupon.discount}% applied
+                  </span>
+                </div>
+                <button
+                  onClick={handleRemoveCoupon}
+                  className="text-sm text-red-500 hover:text-red-700 font-medium"
+                >
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                  onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                  placeholder="Enter coupon code"
+                  className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50/50 text-gray-800 placeholder:text-gray-400 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all"
+                />
+                <button
+                  onClick={handleApplyCoupon}
+                  disabled={couponLoading}
+                  className="bg-[#E21B70] hover:bg-[#c41761] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all disabled:opacity-60"
+                >
+                  {couponLoading ? "..." : "Apply"}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="lg:col-span-1">
@@ -263,7 +371,7 @@ const Checkout = ({
             <p className="text-gray-600 mb-6 font-medium">{provider?.name}</p>
 
             {cartItems ? (
-              cartItems?.map((item, idx) => (
+              carts?.cartItems?.map((item, idx) => (
                 <div key={idx} className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-700">
                     <span>
@@ -286,7 +394,7 @@ const Checkout = ({
             <hr className="my-4" />
 
             <div className="space-y-2 text-gray-600">
-              {cartItems ? (
+              {carts?.cartItems ? (
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span>
@@ -319,6 +427,21 @@ const Checkout = ({
                   <span>Tk {serviceFee}</span>
                 </div>
               )}
+
+              {appliedCoupon && (
+                <div className="flex justify-between text-green-600 font-medium">
+                  <span>Discount ({appliedCoupon.discount}%)</span>
+                  <span>
+                    - Tk{" "}
+                    {Math.floor(
+                      ((carts?.cartItems?.length > 0 ? cartItems.reduce((t, i) => t + i.price, 0)
+                        : totalPrice) *
+                        appliedCoupon.discount) /
+                      100,
+                    )}
+                  </span>
+                </div>
+              )}
             </div>
 
             {cartItems ? (
@@ -345,10 +468,15 @@ const Checkout = ({
 
             <button
               form="order-form"
-              className="w-full mt-8 bg-[#E21B70] hover:bg-[#c41761] text-white font-bold py-4 rounded-xl transition-all cursor-pointer
-             disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={orderSuccess}
+              onClick={() => orderSuccess && setOrderSuccess(false)}
+              className={`w-full mt-8 font-bold py-4 rounded-xl transition-all
+                ${orderSuccess
+                  ? "bg-green-500 text-white cursor-default"
+                  : "bg-[#E21B70] hover:bg-[#c41761] text-white cursor-pointer"
+                } disabled:opacity-80`}
             >
-              Place order
+              {orderSuccess ? "✓ Order Placed" : "Place order"}
             </button>
           </div>
         </div>

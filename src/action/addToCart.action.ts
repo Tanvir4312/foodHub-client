@@ -1,7 +1,7 @@
 "use server";
 
 import { addToCartServices } from "@/services/addToCart.services";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const addToCartAction = async (
   mealId: string,
@@ -25,10 +25,16 @@ export const getCartByIdAction = async (id : string) => {
   return await addToCartServices.getCartsServiceById(id);
 };
 
-export const deleteCartAction = async (id : string) => {
-  return await addToCartServices.deleteCartsService(id);
+export const deleteCartAction = async (id: string) => {
+  const res = await addToCartServices.deleteCartsService(id);
+  revalidateTag("cart-post", "max");
+  revalidatePath("/", "layout");
+  return res;
 };
 
-export const deleteCartItemAction = async (id : string) => {
-  return await addToCartServices.deleteCartItemsService(id);
+export const deleteCartItemAction = async (id: string) => {
+  const res = await addToCartServices.deleteCartItemsService(id);
+  revalidateTag("cart-post", "max");
+  revalidatePath("/", "layout");
+  return res;
 };

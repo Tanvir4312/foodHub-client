@@ -15,7 +15,7 @@ const AllProvider = async () => {
   );
 
   return (
-    <div>
+    <div className="px-5 lg:px-0">
       {availableProviders?.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-6">
@@ -33,7 +33,7 @@ const AllProvider = async () => {
         </div>
       )}
 
-      <div className="mb-10 text-center md:text-left">
+      <div className="mb-10 text-center text-left">
         <h2 className="text-4xl font-black text-gray-900 leading-tight">
           THE BEST KITCHENS <br className="hidden md:block" /> IN YOUR CITY
         </h2>

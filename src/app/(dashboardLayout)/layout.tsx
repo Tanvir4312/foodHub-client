@@ -1,11 +1,9 @@
 
 import { AppSidebar } from "@/components/layout/app-sidebar";
-
+import { DashboardNavbar } from "@/components/layout/DashboardNavbar";
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
-  //   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Roles } from "@/constrants/roles";
 import { services } from "@/services/user.services";
@@ -34,7 +32,12 @@ export default async function Page({
     <SidebarProvider>
       <AppSidebar user={userRole} />
       <SidebarInset>
-        <SidebarTrigger className="" />
+        {/* Dashboard-specific Navbar */}
+        <DashboardNavbar
+          userName={data?.user?.name}
+          userRole={data?.user?.role}
+          userImage={data?.user?.image}
+        />
 
         <div className="flex flex-1 flex-col gap-4 md:p-10">
           {userRole?.role === Roles.admin && admin}

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export default function MealFilterBar() {
 
-    
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -17,7 +17,7 @@ export default function MealFilterBar() {
   };
 
   return (
-  
+
     <div className="bg-white p-6 rounded-2xl shadow-sm border mb-10 flex flex-wrap gap-6 items-end justify-between">
       {/* Search Input */}
       <div className="flex-1 min-w-62.5">
@@ -82,7 +82,6 @@ export default function MealFilterBar() {
         </select>
       </div>
     </div>
-  
+
   );
 }
-  

@@ -8,3 +8,8 @@ export const createReviewAction = async (reviewData: Review, id: string) => {
   revalidateTag("review-data", "max");
   return result;
 };
+
+export const getReviewsForHomePageAction = async () => {
+  const result = await reviewServices.getReviewsForHomePageService();
+  return result;
+};

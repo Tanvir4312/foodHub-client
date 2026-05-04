@@ -5,10 +5,10 @@ import React from "react";
 const CustomerLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
+      <Navbar />
       <div className="max-w-7xl mx-auto">
-        <Navbar />
+        {children}
       </div>
-      {children}
       <Footer />
     </div>
   );
