@@ -10,16 +10,20 @@ export const createOrderAction = async (orderData: OrderDataType) => {
   return result;
 };
 
-export const getOwnOrderAction = async () => {
-  return await orderServices.getOwnOrderSevice();
+export const getOwnOrderAction = async (
+  queryParams?: Record<string, string | number | undefined>,
+) => {
+  return await orderServices.getOwnOrderSevice(queryParams);
 };
 
 export const getOrderByIdAction = async (id: string) => {
   return await orderServices.getOrderByIdService(id);
 };
 
-export const getIncomingOrderAction = async () => {
-  return await orderServices.getIncomigOrderService();
+export const getIncomingOrderAction = async (
+  queryParams?: Record<string, string | number | undefined>,
+) => {
+  return await orderServices.getIncomigOrderService(queryParams);
 };
 
 export const updateOrderStatusAction = async (
@@ -34,6 +38,6 @@ export const updateOrderStatusAction = async (
 };
 
 
-export const getAllOrderAction = async () => {
-  return await orderServices.getAllOrderService();
+export const getAllOrderAction = async (queryParams: Record<string, string | number | undefined>) => {
+  return await orderServices.getAllOrderService(queryParams);
 };

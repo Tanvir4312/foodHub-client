@@ -66,7 +66,7 @@ const ShowAllBlogs = ({ blogs }: { blogs: any[] }) => {
 
                         {/* Content Section */}
                         <div className="p-6">
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-orange-500 transition-colors duration-300 line-clamp-2">
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-slate-100 group-hover:text-orange-500 transition-colors duration-300 line-clamp-2">
                                 {blog.title}
                             </h3>
 

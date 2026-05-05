@@ -15,11 +15,26 @@ type ProviderProfile= {
 }
 
 
+interface GetProviderParams {
+  searchTerm?: string;
+  isAvailable?: string;
+  page?: string;
+  limit?: string;
+}
+
 const API_URL = env.API_URL;
 export const providerServices = {
-  getProviderService: async () => {
+  getProviderService: async (params?: GetProviderParams) => {
     try {
       const url = new URL(`${API_URL}/providers`);
+
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== "") {
+            url.searchParams.append(key, value);
+          }
+        });
+      }
 
       const res = await fetch(url.toString(), {
         cache: "no-store",

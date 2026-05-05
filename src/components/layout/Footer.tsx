@@ -26,10 +26,18 @@ const Footer = () => {
             <ul className="mt-4 space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/about"
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/help-support"
+                  className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
+                >
+                  Help & Support
                 </Link>
               </li>
               <li>
@@ -38,14 +46,6 @@ const Footer = () => {
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   Our Menu
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
-                >
-                  Contact
                 </Link>
               </li>
             </ul>
@@ -59,7 +59,7 @@ const Footer = () => {
             <ul className="mt-4 space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/privacy-policy"
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   Privacy Policy
@@ -67,7 +67,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/terms-of-service"
                   className="text-sm text-muted-foreground hover:text-orange-500 transition-colors"
                 >
                   Terms of Service
@@ -83,19 +83,22 @@ const Footer = () => {
             </h3>
             <div className="mt-4 flex gap-4">
               <Link
-                href="#"
+                target="_blank"
+                href="https://www.facebook.com"
                 className="text-muted-foreground hover:text-orange-500 transition-colors"
               >
                 <Facebook className="h-5 w-5" />
               </Link>
               <Link
-                href="#"
+                target="_blank"
+                href="https://twitter.com"
                 className="text-muted-foreground hover:text-orange-500 transition-colors"
               >
                 <Twitter className="h-5 w-5" />
               </Link>
               <Link
-                href="#"
+                target="_blank"
+                href="https://instagram.com"
                 className="text-muted-foreground hover:text-orange-500 transition-colors"
               >
                 <Instagram className="h-5 w-5" />
@@ -104,15 +107,10 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-12 pt-8 border-t border-gray-100 text-center">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} FoodHub Inc. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            <span className="text-xs text-muted-foreground">
-              Designed with ❤️ for Foodies
-            </span>
-          </div>
         </div>
       </div>
     </footer>

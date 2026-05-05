@@ -24,16 +24,16 @@ export async function proxy(request: NextRequest) {
   }
 
   if (!isAdmin && pathName.startsWith("/admin-dashboard")) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
   if (!isProvider && pathName.startsWith("/provider-dashboard")) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
   if (!isCustomer && pathName.startsWith("/customer-dashboard")) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
-  if (!isCustomer && pathName.startsWith("/checkouts")) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (!(isCustomer || isAdmin) && pathName.startsWith("/checkouts")) {
+    return NextResponse.redirect(new URL("/provider-dashboard", request.url));
   }
   if (
     !(isCustomer || isProvider || isAdmin) &&

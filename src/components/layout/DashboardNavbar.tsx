@@ -126,7 +126,7 @@ export function DashboardNavbar({ userName, userRole, userImage }: DashboardNavb
 
                                     {/* Name & Role */}
                                     <div className="hidden lg:flex flex-col text-left">
-                                        <span className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
+                                        <span className="text-sm font-bold text-slate-900 dark:text-slate-50 leading-tight">
                                             {userName || "User"}
                                         </span>
                                         {userRole && (
@@ -149,7 +149,7 @@ export function DashboardNavbar({ userName, userRole, userImage }: DashboardNavb
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800" />
-                                <DropdownMenuItem 
+                                <DropdownMenuItem
                                     onClick={handleLogout}
                                     className="rounded-xl px-3 py-2.5 gap-3 cursor-pointer focus:bg-rose-50 dark:focus:bg-rose-500/10 focus:text-rose-600 transition-colors"
                                 >

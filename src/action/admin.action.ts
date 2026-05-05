@@ -6,8 +6,8 @@ export const adminStatsAction = async () => {
   return await adminServices.getAdminStats();
 };
 
-export const getAllUserAction = async () => {
-  return await adminServices.getAllUserSevice();
+export const getAllUserAction = async (queryParams: Record<string, string | number | undefined>) => {
+  return await adminServices.getAllUserSevice(queryParams);
 };
 
 export const updateUserStatusAction = async (

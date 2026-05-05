@@ -10,8 +10,8 @@ export const createCategoryAction = async (newCtegoryData: NewCategoryType) => {
   return createCategory;
 };
 
-export const getCategoriesAction = async () => {
-  return await categoryServices.getCategoriesService();
+export const getCategoriesAction = async (queryParams?: Record<string, string | number | undefined>) => {
+  return await categoryServices.getCategoriesService(queryParams);
 };
 
 export const getCategoryByIdAction = async (id: string) => {

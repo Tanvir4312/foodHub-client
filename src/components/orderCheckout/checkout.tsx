@@ -62,7 +62,6 @@ const Checkout = ({
   const handleApplyCoupon = async () => {
     if (!couponInput.trim()) return;
     setCouponLoading(true);
-    console.log("coupon input", couponInput);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/coupons/validate`,
@@ -79,11 +78,9 @@ const Checkout = ({
         return;
       }
       const data = await res.json();
-      console.log("coupon validated", data);
       setAppliedCoupon({ code: data.code, discount: data.discount });
       toast.success(`${data.discount}% discount applied!`);
     } catch (error: any) {
-      console.log(error);
       toast.error(error.message || "Something went wrong");
     } finally {
       setCouponLoading(false);

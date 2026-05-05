@@ -80,7 +80,7 @@ export const addToCartServices = {
     try {
       const cookiStore = await cookies();
 
-      const url = new URL(`${API_URL}/customer/cart/${id}`);
+      const url = new URL(`${API_URL}/cart/${id}`);
 
       const res = await fetch(url.toString(), {
         headers: {

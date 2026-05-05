@@ -6,7 +6,7 @@ import React from "react";
 import Link from "next/link";
 
 const CategoryCard = ({ category }: { category: CategoryType }) => {
- const {image_url, name} = category || {}
+  const { image_url, name } = category || {}
 
   return (
     <div>
@@ -17,11 +17,11 @@ const CategoryCard = ({ category }: { category: CategoryType }) => {
               src={image_url}
               alt={category.name}
               fill
-              
+              unoptimized
               className="object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>
-          <p className="mt-3 text-center font-semibold text-gray-800 group-hover:text-orange-600 transition-colors">
+          <p className="mt-3 text-center font-semibold text-gray-800 dark:text-slate-100 group-hover:text-orange-600 transition-colors">
             {name}
           </p>
         </div>

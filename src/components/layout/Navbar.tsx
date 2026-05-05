@@ -190,22 +190,23 @@ const Navbar = ({
                       <div className="ml-3">
                         {
                           sessionRole === Roles.customer &&
-                          <div className="flex gap-6 items-center">
+                          <div className="flex gap-8 items-center">
                             <Link href="/customer-dashboard">My Orders</Link>
                             <Link href="/customer-dashboard/my-reviews">My Reviews</Link>
                           </div>
                         }
                         {
                           sessionRole === Roles.provider &&
-                          <div className="flex gap-6 items-center">
+                          <div className="flex gap-8 items-center">
                             <Link href="/provider-dashboard/incoming-order">Incoming Order</Link>
                             <Link href="/provider-dashboard/stats">Stats</Link>
                           </div>
                         }
                         {
                           sessionRole === Roles.admin &&
-                          <div className="flex gap-6 items-center">
-                            <Link href="/admin-dashboard">Dashboard</Link>
+                          <div className="flex gap-8 items-center">
+                            <Link href="/admin-dashboard">Stats</Link>
+                            <Link href="/admin-dashboard/all-order">All Orders</Link>
                           </div>
                         }
                       </div>
@@ -426,7 +427,8 @@ const Navbar = ({
                           {
                             sessionRole === Roles.admin &&
                             <div className="flex flex-col gap-6">
-                              <Link href="/admin-dashboard">Dashboard</Link>
+                              <Link href="/admin-dashboard">Stats</Link>
+                              <Link href="/admin-dashboard/all-order">All Orders</Link>
                             </div>
                           }
                         </div>
@@ -434,17 +436,12 @@ const Navbar = ({
                       </Accordion>
 
                       {userData && (
-                        <div className="flex items-center">
-                          <Image
-                            src="https://img.icons8.com/?size=64&id=23392&format=png"
-                            width={25}
-                            height={20}
-                            alt=""
-                          />
+                        <div>
+
 
                           <DropdownMenu onOpenChange={setTrigger}>
                             <DropdownMenuTrigger asChild>
-                              <Button className="cursor-pointer text-[15px] font-semibold text-gray-800 dark:text-slate-200 bg-transparent hover:bg-orange-50 dark:hover:bg-slate-800 border border-transparent hover:border-orange-200 dark:hover:border-slate-700 h-9 focus-visible:ring-0 shadow-none px-0 py-0">
+                              <Button className="cursor-pointer text-[15px] font-semibold text-gray-800 dark:text-slate-200 bg-transparent hover:bg-orange-50 dark:hover:bg-slate-800 border border-transparent hover:border-orange-200 dark:hover:border-slate-700 h-9 focus-visible:ring-0 shadow-none w-full">
                                 {userData && userData?.name}
                                 <IoIosArrowDown
                                   className={`transform transition-transform duration-300 text-[#f54a00] ${trigger ? "rotate-180" : "rotate-0"

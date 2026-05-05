@@ -15,10 +15,13 @@ import {
 } from "lucide-react";
 
 export default async function PremiumAdminStats() {
+
   const res = await adminStatsAction();
 
   const stats = res?.data;
- 
+
+
+
   if (!stats) {
     return;
   }
@@ -50,8 +53,8 @@ export default async function PremiumAdminStats() {
                 ACTIVE
               </span>
             </div>
-            <p className="text-slate-500 text-sm font-medium">Active Users</p>
-            <h3 className="text-2xl font-extrabold text-slate-900">
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Users</p>
+            <h3 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
               {activeUsers}
             </h3>
             <p className="text-xs text-emerald-500 font-bold mt-2">
@@ -71,7 +74,7 @@ export default async function PremiumAdminStats() {
                 SUSPENDED
               </span>
             </div>
-            <p className="text-slate-500 text-sm font-medium">
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
               Suspended Users
             </p>
             <h3 className="text-2xl font-extrabold text-rose-600">
@@ -93,10 +96,10 @@ export default async function PremiumAdminStats() {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
+                <p className="text-slate-400 dark:text-slate-300 text-xs font-bold uppercase tracking-widest">
                   Total Revenue
                 </p>
-                <h2 className="text-3xl font-black mt-2 tracking-tighter">
+                <h2 className="text-3xl font-black mt-2 tracking-tighter text-white dark:text-slate-100">
                   ৳{totalRevenue.toLocaleString()}
                 </h2>
               </div>
@@ -122,10 +125,10 @@ export default async function PremiumAdminStats() {
                 GLOBAL AVG
               </span>
             </div>
-            <p className="text-slate-500 text-sm font-medium">
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
               Avg. Order Value
             </p>
-            <h3 className="text-2xl font-extrabold text-slate-900">
+            <h3 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
               ৳{globalAOV.toFixed(0)}
             </h3>
             <p className="text-xs text-blue-500 font-bold mt-2">
@@ -145,8 +148,8 @@ export default async function PremiumAdminStats() {
                 TOTAL
               </span>
             </div>
-            <p className="text-slate-500 text-sm font-medium">Community Size</p>
-            <h3 className="text-2xl font-extrabold text-slate-900">
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Community Size</p>
+            <h3 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
               {totalUsers}
             </h3>
             <p className="text-xs text-slate-400 mt-2">
@@ -166,10 +169,10 @@ export default async function PremiumAdminStats() {
                 SELLERS
               </span>
             </div>
-            <p className="text-slate-500 text-sm font-medium">
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
               Active Providers
             </p>
-            <h3 className="text-2xl font-extrabold text-slate-900">
+            <h3 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
               {activeProviders}
             </h3>
             <p className="text-xs text-orange-500 font-bold mt-2">
@@ -194,7 +197,7 @@ export default async function PremiumAdminStats() {
               {/* Delivery Progress */}
               <div>
                 <div className="flex justify-between text-sm mb-3">
-                  <span className="font-bold text-slate-600">Success Rate</span>
+
                   <span className="font-black text-emerald-600">
                     Delivered: {deliveredOrders}
                   </span>
@@ -202,7 +205,7 @@ export default async function PremiumAdminStats() {
                 <div className="h-4 w-full bg-slate-100 rounded-full p-1">
                   <div
                     className="h-full bg-linear-to-r from-emerald-400 to-teal-500 rounded-full shadow-lg shadow-emerald-200"
-                    style={{ width: "85%" }}
+                    style={{ width: "100%" }}
                   />
                 </div>
               </div>
@@ -217,7 +220,7 @@ export default async function PremiumAdminStats() {
                     <p className="text-[10px] font-bold text-amber-700 uppercase">
                       Pending
                     </p>
-                    <p className="text-xl font-black text-slate-800">
+                    <p className="text-xl font-black text-slate-800 dark:text-slate-100">
                       {pendingOrders}
                     </p>
                   </div>
@@ -230,7 +233,7 @@ export default async function PremiumAdminStats() {
                     <p className="text-[10px] font-bold text-red-700 uppercase">
                       Cancelled
                     </p>
-                    <p className="text-xl font-black text-slate-800">
+                    <p className="text-xl font-black text-slate-800 dark:text-slate-100">
                       {cancelledOrders}
                     </p>
                   </div>
@@ -254,7 +257,7 @@ export default async function PremiumAdminStats() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-indigo-600 text-white text-[8px] font-black rounded-full">
                   TODAY
                 </div>
-                <p className="text-4xl font-black text-slate-800">
+                <p className="text-4xl font-black text-slate-800 dark:text-slate-100">
                   {signup24h}
                 </p>
                 <p className="text-xs text-slate-500 font-medium mt-1">
@@ -265,28 +268,16 @@ export default async function PremiumAdminStats() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-800 text-white text-[8px] font-black rounded-full">
                   THIS WEEK
                 </div>
-                <p className="text-4xl font-black text-indigo-600">
-                  {signup7d}
-                </p>
+                <div className="text-2xl font-black text-gray-900 dark:text-slate-900">
+                {signup7d}
+              </div>
                 <p className="text-xs text-indigo-500 font-medium mt-1">
                   New Signups
                 </p>
               </div>
             </div>
 
-            <div className="mt-8 p-4 rounded-2xl bg-linear-to-r from-indigo-50 to-blue-50 border border-indigo-100 flex items-center gap-4">
-              <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center shadow-md">
-                <TrendingUp size={24} className="text-indigo-600" />
-              </div>
-              <div>
-                <p className="text-sm font-black text-slate-800 underline decoration-indigo-200 decoration-4 underline-offset-4">
-                  Growth Alert
-                </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Acquisition is up by 14.2% this week
-                </p>
-              </div>
-            </div>
+
           </CardContent>
         </Card>
       </div>

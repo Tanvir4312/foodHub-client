@@ -17,11 +17,16 @@ import { createCategoryAction } from "@/action/categories.action";
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, "Category name length is minimum 2")
+    .min(2, "Category name is required (min 2 chars)")
     .max(30, "Category name cannot exceed 30 characters"),
 
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  image_url: z.string(),
+  description: z
+    .string()
+    .min(10, "Description is required (at least 10 characters)"),
+  image_url: z
+    .string()
+    .min(1, "Image Link is required")
+    .url("Please provide a valid Image URL"),
 });
 const AddCategory = () => {
   const form = useForm({
@@ -114,14 +119,17 @@ const AddCategory = () => {
           {/* Image URL Input (ImageBB Focus) */}
           <form.Field name="image_url">
             {(field) => {
+              const isInvalid =
+                field.state.meta.isTouched &&
+                field.state.meta.errors.length > 0;
               return (
-                <Field>
+                <Field className="flex flex-col gap-2.5">
                   <FieldLabel
                     htmlFor={field.name}
-                    className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-2"
+                    className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-2 uppercase tracking-wider"
                   >
-                    <LinkIcon size={16} className="text-[#E21B70]" />
-                    Profile Image Link
+                    <LinkIcon size={16} className="text-orange-500" />
+                    Category Image Link
                   </FieldLabel>
                   <Input
                     id={field.name}
@@ -129,8 +137,18 @@ const AddCategory = () => {
                     value={field.state.value}
                     placeholder="Paste direct ImageBB link here"
                     onChange={(e) => field.handleChange(e.target.value)}
-                  ></Input>
-                  <div className="bg-amber-50 p-3 rounded-lg mt-2 border border-amber-100">
+                    className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none
+                    ${
+                      isInvalid
+                        ? "border-red-500 bg-red-50/30 focus:ring-2 focus:ring-red-200"
+                        : "border-gray-200 bg-gray-50/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    }`}
+                  />
+                  <FieldError
+                    className="text-red-700"
+                    errors={field.state.meta.errors}
+                  />
+                  <div className="bg-amber-50 p-3 rounded-lg mt-1 border border-amber-100">
                     <p className="text-[11px] text-amber-700 leading-tight">
                       <strong>Tip:</strong> Upload your image to{" "}
                       <a

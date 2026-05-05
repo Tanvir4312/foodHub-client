@@ -10,76 +10,100 @@ import { Order } from "@/types/order.type";
 import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
 
-const OrdersTable = ({ orders }: { orders: Order }) => {
+const OrdersTable = ({ orders }: { orders: any }) => {
+  console.log(orders)
   return (
     <div className="w-full">
       {orders.length > 0 ? (
         <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
           <Table>
-            <TableHeader className="bg-gray-50">
-              <TableRow>
-                <TableHead className="font-bold">Delivery Address</TableHead>
-                <TableHead className="font-bold">Total Amount</TableHead>
-                <TableHead className="font-bold">Order Status</TableHead>
-                <TableHead className="font-bold">Action</TableHead>
-                <TableHead className="font-bold">Action</TableHead>
+            <TableHeader className="bg-slate-50/50 dark:bg-zinc-900/50">
+              <TableRow className="border-slate-100 dark:border-white/5">
+                <TableHead className="font-black uppercase tracking-widest text-[10px] text-slate-400 py-5 pl-6">Delivery Address</TableHead>
+                <TableHead className="font-black uppercase tracking-widest text-[10px] text-slate-400 py-5">Total Amount</TableHead>
+                <TableHead className="font-black uppercase tracking-widest text-[10px] text-slate-400 py-5">Order Date & Time</TableHead>
+                <TableHead className="font-black uppercase tracking-widest text-[10px] text-slate-400 py-5 text-center">Order Status</TableHead>
+                <TableHead className="font-black uppercase tracking-widest text-[10px] text-slate-400 py-5 text-center">Reviews</TableHead>
+                <TableHead className="font-black uppercase tracking-widest text-[10px] text-slate-400 py-5 text-right pr-6">Action</TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
-              {orders?.map((order) => (
+              {orders?.map((order: any) => (
                 <TableRow
                   key={order.id}
-                  className="hover:bg-gray-50 transition"
+                  className="group hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors border-slate-50 dark:border-white/5"
                 >
-                  <TableCell className="max-w-[220px] truncate">
+                  <TableCell className="max-w-[220px] truncate py-5 pl-6 font-medium text-slate-600 dark:text-slate-400">
                     {order.delivery_address}
                   </TableCell>
 
-                  <TableCell className="font-medium">
-                    {order.total_amount}
+                  <TableCell className="font-black text-slate-900 dark:text-slate-100 py-5">
+                    ৳{order.total_amount.toLocaleString()}
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell className="py-5">
+                    <div className="font-bold text-slate-700 dark:text-slate-200">
+                      {new Date(order.createdAt).toLocaleString("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </div>
+                    <div className="text-[10px] text-slate-400 font-medium uppercase tracking-tighter">
+                      {new Date(order.createdAt).toLocaleTimeString("en-GB", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="text-center py-5">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold capitalize ${order.status === "DELIVERED"
-                        ? "bg-green-100 text-green-700"
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${order.status === "DELIVERED"
+                        ? "bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400"
                         : order.status === "PENDING"
-                          ? "bg-red-100 text-red-700"
-                          : order.status === "PROCESSING"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : order.status === "ON_THE_WAY"
-                              ? "bg-blue-100 text-blue-700"
+                          ? "bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400"
+                          : order.status === "PREPARING"
+                            ? "bg-blue-100 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"
+                            : order.status === "OUTFORDELIVERY"
+                              ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"
                               : order.status === "CANCELLED"
-                                ? "bg-gray-200 text-gray-700"
+                                ? "bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-400"
                                 : "bg-gray-100 text-gray-600"
                         }`}
                     >
+                      <span className={`w-1.5 h-1.5 rounded-full mr-2 ${
+                        order.status === "DELIVERED" ? "bg-green-500" : 
+                        order.status === "PENDING" ? "bg-orange-500" : 
+                        order.status === "PREPARING" ? "bg-blue-500" :
+                        order.status === "OUTFORDELIVERY" ? "bg-indigo-500" : "bg-slate-500"
+                      }`} />
                       {order.status.replace("_", " ")}
                     </span>
                   </TableCell>
 
-                  {order.status === "DELIVERED" ? (
-                    <TableCell>
+                  <TableCell className="text-center py-5">
+                    {order.status === "DELIVERED" ? (
                       <Link
                         href={`/customer-dashboard/reviews/${order.id}`}
-                        className="text-amber-600 hover:underline font-medium"
+                        className="text-orange-500 hover:text-orange-600 font-bold text-xs uppercase tracking-tight hover:underline transition-colors"
                       >
-                        Write Reviews
+                        Write Review
                       </Link>
-                    </TableCell>
-                  ) : (
-                    <TableCell className="text-gray-400 text-sm">
-                      —
-                    </TableCell>
-                  )}
+                    ) : (
+                      <span className="text-slate-300 dark:text-slate-700 text-xs font-bold uppercase tracking-widest">
+                        Locked
+                      </span>
+                    )}
+                  </TableCell>
 
-                  <TableCell>
+                  <TableCell className="text-right py-5 pr-6">
                     <Link
                       href={`/customer-dashboard/my-orders/${order.id}`}
-                      className="flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium"
+                      className="inline-flex items-center gap-1 text-slate-400 group-hover:text-orange-500 font-bold text-xs uppercase tracking-widest transition-all"
                     >
-                      Details <FaArrowRightLong size={14} />
+                      Details <FaArrowRightLong size={12} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </TableCell>
                 </TableRow>

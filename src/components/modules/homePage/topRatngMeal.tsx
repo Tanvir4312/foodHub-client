@@ -20,7 +20,7 @@ const TopRatngMeal = async () => {
         <div className="mt-4 h-1 w-20 bg-orange-500 rounded-full"></div>{" "}
 
       </div>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5">
         {meals?.map((meal: MealType) => (
           <TopMealCard key={meal.id} meal={meal}></TopMealCard>
         ))}

@@ -14,8 +14,8 @@ export const createMealAction = async (newMealData: NewMealType) => {
   return newMeal;
 };
 
-export const getMyMealAction = async () => {
-  return await mealServices.getMyMealService();
+export const getMyMealAction = async (params?: Record<string, string | number | undefined>) => {
+  return await mealServices.getMyMealService(params);
 };
 
 export const getMyMealByIdAction = async (id: string) => {

@@ -23,7 +23,20 @@ const formatTime = (totalSeconds: number) => ({
     s: String(totalSeconds % 60).padStart(2, "0"),
 });
 
-export default function SpecialOffers({ activeCoupons }: { activeCoupons: CouponType[] }) {
+import { deleteCouponAction } from "@/action/coupon.action";
+import UpdateCouponModal from "@/components/modules/adminDashboard/UpdateCouponModal";
+import DeleteCouponModal from "@/components/modules/adminDashboard/DeleteCouponModal";
+import { Roles } from "@/constrants/roles";
+import { Loader2, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+
+export function SpecialOffers({
+    activeCoupons,
+    userRole
+}: {
+    activeCoupons: CouponType[];
+    userRole?: string;
+}) {
     const [isMounted, setIsMounted] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -45,8 +58,22 @@ export default function SpecialOffers({ activeCoupons }: { activeCoupons: Coupon
         return () => clearInterval(interval);
     }, []);
 
+    const maxDiscount = activeCoupons.length > 0
+        ? Math.max(...activeCoupons.map(c => c.discount))
+        : 0;
+
+    const sortedCoupons = [...activeCoupons].sort((a, b) => {
+        if (a.discount === maxDiscount && b.discount !== maxDiscount) return -1;
+        if (a.discount !== maxDiscount && b.discount === maxDiscount) return 1;
+        return b.discount - a.discount; // Also sort other coupons by discount descending
+    });
+
     return (
-        <section className="py-16 px-4 bg-gray-50 dark:bg-zinc-900 rounded-2xl shadow">
+        <section id="special-offers" className="py-10 relative overflow-hidden bg-gray-50 dark:bg-zinc-950/50 px-2 rounded-2xl">
+            {/* Background elements */}
+            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#f54a00]/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
+            <div className="absolute bottom-0 left-0 w-1/4 h-1/4 bg-orange-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4" />
+
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}
@@ -63,14 +90,14 @@ export default function SpecialOffers({ activeCoupons }: { activeCoupons: Coupon
                 </div>
 
                 {/* Coupon Cards from API */}
-                {activeCoupons.length === 0 ? (
+                {sortedCoupons.length === 0 ? (
                     <p className="text-center text-gray-400 dark:text-zinc-500 text-sm">
                         No active coupons right now. Check back soon!
                     </p>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {activeCoupons.map((coupon, index) => {
-                            const isFeatured = index === 0;
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                        {sortedCoupons.map((coupon, index) => {
+                            const isFeatured = coupon.discount === maxDiscount;
                             const isExpiringSoon = isMounted &&
                                 new Date(coupon.expiresAt).getTime() - currentTime <
                                 7 * 24 * 60 * 60 * 1000;
@@ -99,28 +126,40 @@ export default function SpecialOffers({ activeCoupons }: { activeCoupons: Coupon
                                         }
                                         ${isFeatured
                                             ? "bg-orange-50 dark:bg-orange-950/30 border-orange-200 dark:border-orange-800"
-                                            : "bg-white dark:bg-zinc-800 border-gray-100 dark:border-zinc-700"
+                                            : "bg-white dark:bg-zinc-900 border-gray-100 dark:border-zinc-700/50"
                                         }`}
                                 >
                                     {isFeatured && (
                                         <>
-                                            <div className="absolute -right-4 -bottom-4 w-20 h-20 rounded-full bg-orange-100 dark:bg-orange-900/20" />
-                                            <div className="absolute right-5 -bottom-7 w-14 h-14 rounded-full bg-orange-100/60 dark:bg-orange-900/10" />
+                                            <div className="absolute -right-4 -bottom-4 w-20 h-20 rounded-full bg-orange-100 dark:bg-orange-900/10" />
+                                            <div className="absolute right-5 -bottom-7 w-14 h-14 rounded-full bg-orange-100/60 dark:bg-orange-900/5" />
                                         </>
                                     )}
 
                                     <div className="relative z-10">
-                                        <span
-                                            className={`inline-block text-[11px] font-semibold px-3 py-0.5 rounded-full mb-3
-                                                ${isFeatured
-                                                    ? "bg-[#f54a00] text-orange-50"
-                                                    : isExpiringSoon
-                                                        ? "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
-                                                        : "bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-300"
-                                                }`}
-                                        >
-                                            {isFeatured ? "Hot Deal" : isExpiringSoon ? "Expiring Soon" : "Active"}
-                                        </span>
+                                        <div className="flex justify-between items-start mb-3">
+                                            <span
+                                                className={`inline-block text-[11px] font-semibold px-3 py-0.5 rounded-full
+                                                    ${isFeatured
+                                                        ? "bg-[#f54a00] text-orange-50"
+                                                        : !coupon.isActive
+                                                            ? "bg-red-50 text-red-600 border border-red-100"
+                                                            : isExpiringSoon
+                                                                ? "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+                                                                : "bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-300"
+                                                    }`}
+                                            >
+                                                {isFeatured ? "Hot Deal" : !coupon.isActive ? "InActive" : isExpiringSoon ? "Expiring Soon" : "Active"}
+                                            </span>
+
+                                            {/* Admin Actions */}
+                                            {userRole === Roles.admin && (
+                                                <div className="flex items-center gap-1.5 ml-auto">
+                                                    <UpdateCouponModal coupon={coupon} />
+                                                    <DeleteCouponModal couponId={coupon.id} couponCode={coupon.code} />
+                                                </div>
+                                            )}
+                                        </div>
 
                                         <p className={`font-extrabold mb-1 text-[#f54a00] ${isFeatured ? "text-3xl" : "text-2xl"}`}>
                                             {coupon.discount}% OFF
@@ -132,7 +171,7 @@ export default function SpecialOffers({ activeCoupons }: { activeCoupons: Coupon
                                             </span>
                                         </div>
 
-                                        <p className={`text-xs leading-relaxed mb-3 ${isFeatured ? "text-orange-700 dark:text-orange-300" : "text-gray-400 dark:text-zinc-500"}`}>
+                                        <p className={`text-xs leading-relaxed mb-3 ${isFeatured ? "text-orange-700 dark:text-orange-300" : "text-gray-400 dark:text-zinc-400"}`}>
                                             Valid until{" "}
                                             {new Date(coupon.expiresAt).toLocaleDateString("en-US", {
                                                 month: "short",
@@ -143,7 +182,7 @@ export default function SpecialOffers({ activeCoupons }: { activeCoupons: Coupon
 
                                         {usagePercent !== null && (
                                             <div className="mb-4">
-                                                <div className="flex justify-between text-[10px] text-gray-400 dark:text-zinc-500 mb-1">
+                                                <div className="flex justify-between text-[10px] text-gray-400 dark:text-zinc-400 mb-1">
                                                     <span>{coupon.usedCount} used</span>
                                                     <span>{coupon.usageLimit} max</span>
                                                 </div>
@@ -210,3 +249,5 @@ export default function SpecialOffers({ activeCoupons }: { activeCoupons: Coupon
         </section>
     );
 }
+
+export default SpecialOffers;

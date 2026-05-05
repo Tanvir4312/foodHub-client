@@ -38,6 +38,7 @@ import {
   X,
   UserCircle,
   Heart,
+  User,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -55,6 +56,8 @@ const iconMap: Record<string, React.ReactNode> = {
   "My Orders": <ShoppingBag className="size-4" />,
   "My Reviews": <Heart className="size-4" />,
   "Offers": <UtensilsCrossed className="size-4" />,
+  "Coupons": <Tag className="size-4" />,
+  "Blogs": <User className="size-4" />,
   "Home": <Home className="size-4" />,
 };
 

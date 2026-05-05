@@ -40,11 +40,22 @@ export const orderServices = {
     }
   },
 
-  getOwnOrderSevice: async () => {
+  getOwnOrderSevice: async (
+    queryParams?: Record<string, string | number | undefined>,
+  ) => {
     const cookieStore = await cookies();
 
     try {
       const url = new URL(`${API_URL}/order/orders`);
+
+      if (queryParams) {
+        Object.entries(queryParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== "") {
+            url.searchParams.append(key, value.toString());
+          }
+        });
+      }
+
       const res = await fetch(url.toString(), {
         headers: {
           Cookie: cookieStore.toString(),
@@ -84,10 +95,20 @@ export const orderServices = {
     }
   },
 
-  getIncomigOrderService: async () => {
+  getIncomigOrderService: async (
+    queryParams?: Record<string, string | number | undefined>,
+  ) => {
     const cookiStore = await cookies();
     try {
       const url = new URL(`${API_URL}/order/incoming-orders/`);
+
+      if (queryParams) {
+        Object.entries(queryParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== "") {
+            url.searchParams.append(key, value.toString());
+          }
+        });
+      }
 
       const res = await fetch(url.toString(), {
         headers: {
@@ -137,22 +158,33 @@ export const orderServices = {
     }
   },
 
-  getAllOrderService: async () => {
+  getAllOrderService: async (queryParams: Record<string, string | number | undefined>) => {
     const cookiStore = await cookies();
     try {
       const url = new URL(`${API_URL}/admin/orders`);
+
+      if (queryParams) {
+        Object.entries(queryParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== "") {
+            url.searchParams.append(key, value.toString());
+          }
+        });
+      }
 
       const res = await fetch(url.toString(), {
         headers: {
           Cookie: cookiStore.toString(),
         },
-        next: { tags: ["order-data"] },
+        next: { tags: ["order-data", "order-status"] },
       });
 
       const allOrder = await res.json();
 
-      if (!allOrder) {
-        return { data: null, error: { message: "Something went wrong" } };
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: allOrder.message || "Something went wrong!" },
+        };
       }
       return { data: allOrder, error: null };
     } catch (err) {

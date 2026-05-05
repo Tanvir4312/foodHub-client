@@ -1,20 +1,22 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-
+import { useAppTransition } from "../adminDashboard/users/UserManagementProvider";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function MealFilterBar() {
-
-
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { startTransition } = useAppTransition();
 
-  const handleFilter = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) params.set(key, value);
-    else params.delete(key);
-    router.push(`?${params.toString()}`, { scroll: false });
-  };
+  const handleFilter = useDebouncedCallback((key: string, value: string) => {
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams);
+      if (value) params.set(key, value);
+      else params.delete(key);
+      router.push(`?${params.toString()}`, { scroll: false });
+    });
+  }, 500);
 
   return (
 
@@ -28,7 +30,7 @@ export default function MealFilterBar() {
           type="text"
           placeholder="Search by name (e.g. Burger) or Categories (e.g. Bangladeshi)"
           className="w-full border-gray-200 border p-3 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all"
-          onChange={(e) => handleFilter("search", e.target.value)}
+          onChange={(e) => handleFilter("searchTerm", e.target.value)}
         />
       </div>
 

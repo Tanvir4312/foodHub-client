@@ -4,7 +4,7 @@ import React from "react";
 import { providerAction } from "@/action/provider.action";
 import { cartType } from "@/types/cart.type";
 import { useEffect, useState } from "react";
-import { ShoppingBag, Trash2 } from "lucide-react";
+import { ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { CartItemsType } from "@/types/cartItems.type";
 import {
@@ -33,9 +33,10 @@ const ShowCartData = ({
  
   useEffect(() => {
     const fetchCount = async () => {
-      const { data } = await providerAction(provider_id);
+      const { data: providerResponse } = await providerAction(provider_id);
+      const providerData = providerResponse?.data || providerResponse;
 
-      setProvider(data);
+      setProvider(providerData);
     };
 
     fetchCount();
@@ -193,20 +194,7 @@ const ShowCartData = ({
           </Link>
         </span>
 
-        <svg
-          className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="ArrowRightIcon"
-          />
-          <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
+        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
       </button>
     </div>
   );

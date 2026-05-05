@@ -6,73 +6,82 @@ import Link from "next/link";
 
 const ProviderCard = ({ provider }: { provider: ProviderType }) => {
   return (
-    <div className={cn("group", !provider.isAvailable && "pointer-events-none opacity-70")}>
-      <Link href={`/restaurant/menu/${provider.id}`}>
-        <div className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 dark:hover:border-zinc-600 group">
-
-          {/* Image */}
-          <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-zinc-800">
+    <div className={cn("group flex flex-col h-full", !provider.isAvailable && "opacity-70")}>
+      <Link href={`/restaurant/menu/${provider.id}`} className="flex-grow flex flex-col">
+        <div className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 rounded-[32px] overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl dark:hover:border-orange-500/30 flex flex-col h-full">
+          {/* Image Section */}
+          <div className="relative h-56 overflow-hidden bg-gray-100 dark:bg-zinc-800">
             <Image
               src={provider.logo_url}
               alt={provider.name}
               fill
               unoptimized
-              className={`object-cover transition-transform duration-500
-        ${!provider.isAvailable ? "grayscale opacity-65" : "group-hover:scale-[1.07]"}`}
+              className={`object-cover transition-transform duration-700
+                ${!provider.isAvailable ? "grayscale opacity-50" : "group-hover:scale-110"}`}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/08 to-transparent " />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
 
-            {provider.isAvailable ? (
-              <div className="absolute top-3 left-3 bg-black/45 dark:bg-white dark:text-gray-700 text-white text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5 ">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block " />
-                Open
-              </div>
-            ) : (
-              <div className="absolute top-3 right-3 bg-red-700 dark:bg-red-700 dark:text-red-200 text-red-100 text-[11px] font-medium px-2.5 py-1 rounded-full">
-                Closed
-              </div>
-            )}
+            {/* Badges */}
+            <div className="absolute top-4 left-4 flex gap-2">
+              {provider.isAvailable ? (
+                <div className="bg-white/95 dark:bg-black/80 backdrop-blur-md text-green-600 dark:text-green-500 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-xl border border-white/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                  Available
+                </div>
+              ) : (
+                <div className="bg-red-500/90 dark:bg-red-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl shadow-xl">
+                  Closed
+                </div>
+              )}
+            </div>
+
+            <div className="absolute bottom-4 left-4">
+              <span className="bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl shadow-lg">
+                Quick Delivery
+              </span>
+            </div>
           </div>
 
-          {/* Body */}
-          <div className="p-4 bg-white dark:bg-zinc-900 group">
-            <h3 className="text font-medium text-gray-900 tracking-tight uppercase tracking-wide mb-1">
+          {/* Content Section */}
+          <div className="p-6 flex flex-col flex-grow">
+            <h3 className="text-xl font-black text-slate-900 dark:text-slate-100 tracking-tight mb-2 group-hover:text-orange-500 transition-colors">
               {provider.name}
             </h3>
-            <div className="flex flex-wrap gap-x-1.5 text-gray-400 dark:text-zinc-500 text-xs italic mb-3">
+            
+            <div className="flex flex-wrap gap-1.5 mb-6">
               {provider.meals?.length > 0 ? (
                 Array.from(
                   new Set(
                     provider?.meals
                       ?.map((meal: MealType) => meal.categories?.name)
-                      .filter(Boolean),
-                  ),
-                )?.map((categoryName, index, array) => (
-                  <span key={index}>
+                      .filter(Boolean)
+                  )
+                ).slice(0, 3).map((categoryName, index) => (
+                  <span key={index} className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider bg-slate-50 dark:bg-white/5 px-2 py-1 rounded-lg">
                     {categoryName as string}
-                    {index < array.length - 1 ? " •" : ""}
                   </span>
                 ))
               ) : (
-                <span>General Food</span>
+                <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider bg-slate-50 dark:bg-white/5 px-2 py-1 rounded-lg">
+                  General Food
+                </span>
               )}
             </div>
 
-            <div className="border-t border-gray-100 dark:border-zinc-700 pt-3 flex justify-between items-center">
-              <span className="text-xs text-gray-400 dark:text-zinc-500">Quick Delivery</span>
+            <div className="mt-auto pt-6 border-t border-slate-100 dark:border-white/5 flex justify-between items-center">
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Experience</span>
+                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Premium Dining</span>
+              </div>
+
               {provider.isAvailable ? (
-
-                <button className="bg-orange-600 group-hover:bg-gray-900 group-hover:text-slate-50 dark:group-hover:bg-zinc-700 tracking-tight  text-xs font-medium px-4 py-1.5 rounded-lg transition-all duration-200 hover:scale-[1.04] active:scale-[0.97]">
-                  Menu
-                </button>
-
+                <div className="bg-orange-500 text-white p-2.5 rounded-2xl group-hover:bg-orange-600 transition-all shadow-lg shadow-orange-200 dark:shadow-none transform group-hover:translate-x-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
               ) : (
-                <button
-                  disabled
-                  className="bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 text-xs font-medium px-4 py-1.5 rounded-lg cursor-not-allowed"
-                >
-                  Menu
-                </button>
+                <div className="bg-slate-100 dark:bg-white/5 text-slate-400 p-2.5 rounded-2xl">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
               )}
             </div>
           </div>

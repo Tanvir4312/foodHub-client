@@ -90,36 +90,33 @@ const ProviderDetailsWithMenu = async ({
             {providerData?.meals?.map((meal: MealType) => (
               <div
                 key={meal.id}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all group overflow-hidden"
+                className="bg-white dark:bg-zinc-900 rounded-[32px] overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-xl dark:hover:border-orange-500/30 transition-all duration-300 group flex flex-col h-full"
               >
                 {/* Meal Image */}
-                <Link href={`/meals/${meal.id}`}>
-                  <div className="h-48 overflow-hidden">
-                    <Image
-                      src={meal?.image_url as string}
-                      alt={meal?.name as string}
-                      width={200}
-                      height={200}
-                      unoptimized
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                <Link href={`/meals/${meal.id}`} className="relative block h-56 overflow-hidden">
+                  <Image
+                    src={meal?.image_url as string}
+                    alt={meal?.name as string}
+                    fill
+                    unoptimized
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/95 dark:bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs font-black text-orange-600 shadow-xl border border-white/20">
+                    ${meal.price}
                   </div>
                 </Link>
 
                 {/* Meal Info */}
-                <div className="p-5">
-                  <h3 className="text-xl font-bold text-gray-800">
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-xl font-black text-gray-800 dark:text-slate-100 line-clamp-1 group-hover:text-orange-500 transition-colors mb-4">
                     {meal.name}
                   </h3>
-                  <p className="text-orange-600 font-bold text-lg mt-1">
-                    ${meal.price}
-                  </p>
 
                   {/* Buttons */}
-                  <div className="mt-5 flex gap-2">
+                  <div className="mt-auto flex flex-col gap-3">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <button className="flex-1 px-3 py-2 text-sm font-semibold bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors cursor-pointer">
+                        <button className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] shadow-lg shadow-orange-200 dark:shadow-none">
                           Order Now
                         </button>
                       </DialogTrigger>
@@ -137,7 +134,7 @@ const ProviderDetailsWithMenu = async ({
                     </Dialog>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <button className="flex-1 px-3 py-2 text-sm font-semibold border-2 border-orange-500 text-orange-600 rounded-xl hover:bg-orange-50 transition-colors cursor-pointer">
+                        <button className="w-full border-2 cursor-pointer border-orange-500/20 dark:border-orange-500/30 text-orange-600 dark:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
                           Add to Cart
                         </button>
                       </DialogTrigger>

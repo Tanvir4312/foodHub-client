@@ -32,9 +32,17 @@ export const categoryServices = {
       return { data: null, error: { message: "Categories not found" } };
     }
   },
-  getCategoriesService: async () => {
+  getCategoriesService: async (queryParams?: Record<string, string | number | undefined>) => {
     try {
       const url = new URL(`${API_URL}/categories`);
+
+      if (queryParams) {
+        Object.entries(queryParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== "") {
+            url.searchParams.append(key, value.toString());
+          }
+        });
+      }
 
       const res = await fetch(url.toString(), {
         next: { tags: ["category-data"] },

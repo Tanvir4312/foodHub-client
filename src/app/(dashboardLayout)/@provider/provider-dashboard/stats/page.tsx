@@ -88,7 +88,7 @@ const ProviderStats = async () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-black text-gray-900">
+              <div className="text-2xl font-black text-gray-900 dark:text-slate-100">
                 {item.value}
               </div>
               <p className="text-[10px] text-muted-foreground mt-1 font-medium">

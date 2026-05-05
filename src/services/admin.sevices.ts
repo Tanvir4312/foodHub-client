@@ -29,16 +29,24 @@ export const adminServices = {
       return { data: null, error: { message: "Something went wrong" } };
     }
   },
-  getAllUserSevice: async () => {
+  getAllUserSevice: async (queryParams: Record<string, string | number | undefined>) => {
     const cookieStore = await cookies();
     try {
       const url = new URL(`${API_URL}/admin/users`);
+
+      if (queryParams) {
+        Object.entries(queryParams).forEach(([key, value]) => {
+          if (value !== undefined && value !== "") {
+            url.searchParams.append(key, value.toString());
+          }
+        });
+      }
 
       const res = await fetch(url.toString(), {
         headers: {
           Cookie: cookieStore.toString(),
         },
-        next : {tags : ["update-status"]}
+        next: { tags: ["update-status", "users"] },
       });
 
       const allUser = await res.json();

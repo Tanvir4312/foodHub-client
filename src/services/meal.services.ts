@@ -5,11 +5,12 @@ import { NewMealType } from "@/types/newMeal.type";
 import { cookies } from "next/headers";
 
 interface GetBlogsParams {
-  search?: string;
+  searchTerm?: string;
   minPrice?: string;
   maxPrice?: string;
   dietary?: string;
   page?: string;
+  limit?: string;
 }
 
 const API_URL = env.API_URL;
@@ -107,10 +108,18 @@ export const mealServices = {
     }
   },
 
-  getMyMealService: async () => {
+  getMyMealService: async (params?: Record<string, string | number | undefined>) => {
     const cookieStore = cookies();
     try {
       const url = new URL(`${API_URL}/provider/meals/own-meals`);
+
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== "") {
+            url.searchParams.append(key, value.toString());
+          }
+        });
+      }
 
       const res = await fetch(url.toString(), {
         headers: {
@@ -120,8 +129,8 @@ export const mealServices = {
       });
       const newMeal = await res.json();
 
-      if (!newMeal) {
-        return { data: null, error: { message: "Failed!!!" } };
+      if (!res.ok) {
+        return { data: null, error: { message: newMeal.message || "Failed!!!" } };
       }
       return { data: newMeal, error: null };
     } catch (err) {

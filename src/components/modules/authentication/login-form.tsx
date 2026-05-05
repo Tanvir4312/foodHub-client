@@ -71,11 +71,11 @@ export function LoginForm({
     };
 
     const { email, password } = credentials[role];
-    
+
     // Update form values
     form.setFieldValue("email", email);
     form.setFieldValue("password", password);
-    
+
     toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} credentials filled!`, {
       description: "Logging you in automatically...",
       duration: 2000,

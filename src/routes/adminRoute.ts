@@ -21,6 +21,14 @@ export const adminRoute: RoutesType = [
     title: "All Categoy",
     url: "/admin-dashboard/categories",
   },
+  {
+    title: "Coupons",
+    url: "/admin-dashboard/coupons",
+  },
+  {
+    title: "Blogs",
+    url: "/admin-dashboard/blogs",
+  },
 
   {
     title: "Home",
